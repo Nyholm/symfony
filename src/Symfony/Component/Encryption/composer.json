@@ -1,0 +1,31 @@
+{
+    "name": "symfony/encryption",
+    "type": "library",
+    "description": "Symfony Encryption Component",
+    "keywords": ["encryption"],
+    "homepage": "https://symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tobias Nyholm",
+            "email": "tobias.nyholm@gmail.com"
+        },
+        {
+            "name": "Symfony Community",
+            "homepage": "https://symfony.com/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.5"
+    },
+    "require-dev": {
+        "phpseclib/phpseclib": "^3.0"
+    },
+    "autoload": {
+        "psr-4": { "Symfony\\Component\\Encryption\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "minimum-stability": "dev"
+}
