@@ -354,6 +354,7 @@ class FlattenException extends LegacyFlattenException
             }
         }
 
+
         return $result;
     }
 
