@@ -17,12 +17,18 @@ jobs:
           ini-values: "memory_limit=-1"
           coverage: none
 
-      - name: Checkout base
+      - name: Debug
+        run: |
+          echo ${{ github.base_ref }}
+          echo ${{ github.ref }}
+          echo $(git merge-base --fork-point ${{ github.base_ref }} ${{ github.ref }})
+
+      - name: Checkout PR
         uses: actions/checkout@v2
         with:
           path: pr
 
-      - name: Checkout PR
+      - name: Checkout base
         uses: actions/checkout@v2
         with:
           ref: git merge-base --fork-point ${{ github.base_ref }} ${{ github.ref }}
