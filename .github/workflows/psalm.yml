@@ -25,7 +25,7 @@ jobs:
       - name: Checkout PR
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.base_ref }}
+          ref: git merge-base --fork-point ${{ github.base_ref }} ${{ github.ref }}
           path: base
 
       - name: Configure composer
