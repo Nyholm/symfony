@@ -25,52 +25,19 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * @author Jérémy Derussé <jeremy@derusse.com>
+ * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class AmazonSnsTransport implements TransportInterface, SetupableTransportInterface, MessageCountAwareInterface, ResetInterface
+class AmazonSnsTransport implements SenderInterface, SetupableTransportInterface
 {
     private $serializer;
     private $connection;
-    private $receiver;
     private $sender;
 
-    public function __construct(Connection $connection, SerializerInterface $serializer = null, ReceiverInterface $receiver = null, SenderInterface $sender = null)
+    public function __construct(Connection $connection, SerializerInterface $serializer = null, SenderInterface $sender = null)
     {
         $this->connection = $connection;
         $this->serializer = $serializer ?? new PhpSerializer();
-        $this->receiver = $receiver;
         $this->sender = $sender;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function get(): iterable
-    {
-        return ($this->receiver ?? $this->getReceiver())->get();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function ack(Envelope $envelope): void
-    {
-        ($this->receiver ?? $this->getReceiver())->ack($envelope);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function reject(Envelope $envelope): void
-    {
-        ($this->receiver ?? $this->getReceiver())->reject($envelope);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMessageCount(): int
-    {
-        return ($this->receiver ?? $this->getReceiver())->getMessageCount();
     }
 
     /**
@@ -91,20 +58,6 @@ class AmazonSnsTransport implements TransportInterface, SetupableTransportInterf
         } catch (HttpException $e) {
             throw new TransportException($e->getMessage(), 0, $e);
         }
-    }
-
-    public function reset()
-    {
-        try {
-            $this->connection->reset();
-        } catch (HttpException $e) {
-            throw new TransportException($e->getMessage(), 0, $e);
-        }
-    }
-
-    private function getReceiver(): AmazonSnsReceiver
-    {
-        return $this->receiver = new AmazonSnsReceiver($this->connection, $this->serializer);
     }
 
     private function getSender(): AmazonSnsSender

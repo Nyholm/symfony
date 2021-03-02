@@ -20,6 +20,7 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 
 /**
  * @author Jérémy Derussé <jeremy@derusse.com>
+ * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
 class AmazonSnsSender implements SenderInterface
 {

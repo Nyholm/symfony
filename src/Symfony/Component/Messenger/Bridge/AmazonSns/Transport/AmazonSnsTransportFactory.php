@@ -12,14 +12,16 @@
 namespace Symfony\Component\Messenger\Bridge\AmazonSns\Transport;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\Transport\Sender\SenderInterface;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Messenger\Transport\TransportFactoryInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
 /**
  * @author Jérémy Derussé <jeremy@derusse.com>
+ * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class AmazonSnsTransportFactory implements TransportFactoryInterface
+class AmazonSnsTransportFactory
 {
     private $logger;
 
@@ -28,7 +30,7 @@ class AmazonSnsTransportFactory implements TransportFactoryInterface
         $this->logger = $logger;
     }
 
-    public function createTransport(string $dsn, array $options, SerializerInterface $serializer): TransportInterface
+    public function createTransport(string $dsn, array $options, SerializerInterface $serializer): SenderInterface
     {
         unset($options['transport_name']);
 
