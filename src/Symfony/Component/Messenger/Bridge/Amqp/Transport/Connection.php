@@ -115,6 +115,10 @@ class Connection
             ],
         ], $connectionOptions);
         $this->autoSetupExchange = $this->autoSetup = $connectionOptions['auto_setup'] ?? true;
+        if ($this->autoSetupExchange !== false) {
+            trigger_deprecation('symfony/amqp-messenger', '5.3', 'The "auto_setup" feature is deprecated and will be removed in Symfony 6.0');
+        }
+
         $this->exchangeOptions = $exchangeOptions;
         $this->queuesOptions = $queuesOptions;
         $this->amqpFactory = $amqpFactory ?: new AmqpFactory();
@@ -148,7 +152,7 @@ class Connection
      *   * delay:
      *     * queue_name_pattern: Pattern to use to create the queues (Default: "delay_%exchange_name%_%routing_key%_%delay%")
      *     * exchange_name: Name of the exchange to be used for the delayed/retried messages (Default: "delays")
-     *   * auto_setup: Enable or not the auto-setup of queues and exchanges (Default: true)
+     *   * auto_setup: (deprecated) Enable or not the auto-setup of queues and exchanges (Default: true)
      *
      *   * Connection tuning options (see http://www.rabbitmq.com/amqp-0-9-1-reference.html#connection.tune for details):
      *     * channel_max: Specifies highest channel number that the server permits. 0 means standard extension limit

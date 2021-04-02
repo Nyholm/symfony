@@ -108,12 +108,15 @@ class Connection
         $this->group = $configuration['group'] ?? self::DEFAULT_OPTIONS['group'];
         $this->consumer = $configuration['consumer'] ?? self::DEFAULT_OPTIONS['consumer'];
         $this->queue = $this->stream.'__queue';
-        $this->autoSetup = $configuration['auto_setup'] ?? self::DEFAULT_OPTIONS['auto_setup'];
         $this->maxEntries = $configuration['stream_max_entries'] ?? self::DEFAULT_OPTIONS['stream_max_entries'];
         $this->deleteAfterAck = $configuration['delete_after_ack'] ?? self::DEFAULT_OPTIONS['delete_after_ack'];
         $this->deleteAfterReject = $configuration['delete_after_reject'] ?? self::DEFAULT_OPTIONS['delete_after_reject'];
         $this->redeliverTimeout = ($configuration['redeliver_timeout'] ?? self::DEFAULT_OPTIONS['redeliver_timeout']) * 1000;
         $this->claimInterval = $configuration['claim_interval'] ?? self::DEFAULT_OPTIONS['claim_interval'];
+        $this->autoSetup = $configuration['auto_setup'] ?? self::DEFAULT_OPTIONS['auto_setup'];
+        if ($this->autoSetup !== false) {
+            trigger_deprecation('symfony/redis-messenger', '5.3', 'The "auto_setup" feature is deprecated and will be removed in Symfony 6.0');
+        }
     }
 
     public static function fromDsn(string $dsn, array $redisOptions = [], \Redis $redis = null): self

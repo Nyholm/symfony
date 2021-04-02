@@ -62,6 +62,9 @@ class Connection
     public function __construct(array $configuration, SqsClient $client = null, string $queueUrl = null)
     {
         $this->configuration = array_replace_recursive(self::DEFAULT_OPTIONS, $configuration);
+        if ($this->configuration['auto_setup'] !== false) {
+            trigger_deprecation('symfony/amazon-sqs-messenger', '5.3', 'The "auto_setup" feature is deprecated and will be removed in Symfony 6.0');
+        }
         $this->client = $client ?? new SqsClient([]);
         $this->queueUrl = $queueUrl;
     }
@@ -97,7 +100,7 @@ class Connection
      * * poll_timeout: amount of seconds the transport should wait for new message
      * * visibility_timeout: amount of seconds the message won't be visible
      * * sslmode: Can be "disable" to use http for a custom endpoint
-     * * auto_setup: Whether the queue should be created automatically during send / get (Default: true)
+     * * auto_setup: (deprecated) Whether the queue should be created automatically during send / get (Default: true)
      * * debug: Log all HTTP requests and responses as LoggerInterface::DEBUG (Default: false)
      */
     public static function fromDsn(string $dsn, array $options = [], HttpClientInterface $client = null, LoggerInterface $logger = null): self

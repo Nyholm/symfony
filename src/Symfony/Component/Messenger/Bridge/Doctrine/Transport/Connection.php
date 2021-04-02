@@ -54,7 +54,7 @@ class Connection implements ResetInterface
      * * connection: name of the Doctrine's entity manager
      * * queue_name: name of the queue
      * * redeliver_timeout: Timeout before redeliver messages still in handling state (i.e: delivered_at is not null and message is still in table). Default: 3600
-     * * auto_setup: Whether the table should be created automatically during send / get. Default: true
+     * * auto_setup: (deprecated) Whether the table should be created automatically during send / get. Default: true
      */
     protected $configuration = [];
     protected $driverConnection;
@@ -68,6 +68,9 @@ class Connection implements ResetInterface
         $this->driverConnection = $driverConnection;
         $this->schemaSynchronizer = $schemaSynchronizer;
         $this->autoSetup = $this->configuration['auto_setup'];
+        if ($this->autoSetup !== false) {
+            trigger_deprecation('symfony/doctrine-messenger', '5.3', 'The "auto_setup" feature is deprecated and will be removed in Symfony 6.0');
+        }
     }
 
     public function reset()
