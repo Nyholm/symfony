@@ -1,0 +1,44 @@
+name: Package
+
+on:
+  pull_request:
+    paths:
+      - src/**
+
+jobs:
+  matrix:
+    name: Find packages
+    runs-on: Ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Fetch branch from where the PR started
+        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+
+      - name: Find packages
+        id: find-packages
+        run: echo "::set-output name=list::$(php .github/get-modified-packages.php $(find src/Symfony -mindepth 2 -type f -name composer.json -printf '%h\n' | jq -R -s -c 'split("\n")[:-1]')) $(git diff --name-only origin/${{ github.base_ref }} HEAD | grep src/ | jq -R -s -c 'split("\n")[:-1]'))"
+
+    outputs:
+      # Make the outputs accessible outside this job
+      list: ${{ steps.find-packages.outputs.list }}
+
+  build:
+    needs: matrix
+    name: Test
+    runs-on: Ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(needs.matrix.outputs.list) }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
