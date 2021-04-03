@@ -1,0 +1,63 @@
+name: Package
+
+on:
+  pull_request:
+    paths:
+      - src/**
+
+jobs:
+  matrix:
+    name: Find modified packages
+    runs-on: Ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Fetch branch from where the PR started
+        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+
+      - name: Find packages
+        id: find-packages
+        run: echo "::set-output name=packages::$(php .github/get-modified-packages.php $(find src/Symfony -mindepth 2 -type f -name composer.json -printf '%h\n' | jq -R -s -c 'split("\n")[:-1]') $(git diff --name-only origin/${{ github.base_ref }} HEAD | grep src/ | jq -R -s -c 'split("\n")[:-1]'))"
+
+    outputs:
+      # Make the outputs accessible outside this job
+      packages: ${{ steps.find-packages.outputs.packages }}
+
+  meta-files:
+    needs: matrix
+    name: Meta files
+    runs-on: Ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(needs.matrix.outputs.packages) }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Verify meta files exists
+        run: |
+          test -f ${{ matrix.package.directory }}/.gitattributes
+          test -f ${{ matrix.package.directory }}/.gitignore
+          test -f ${{ matrix.package.directory }}/CHANGELOG.md
+          test -f ${{ matrix.package.directory }}/LICENSE
+          test -f ${{ matrix.package.directory }}/phpunit.xml.dist
+          test ! -f ${{ matrix.package.directory }}/phpunit.xml
+          test -f ${{ matrix.package.directory }}/README.md
+
+      - name: License file is correct
+        if: ${{ matrix.package.new }}
+        run: |
+          FIRST_LINE="Copyright (c) $(date +"%Y") Fabien Potencier"
+          PACKAGE_FIRST_LINE=$(head -1 ${{ matrix.package.directory }}/LICENSE)
+          [[ "$FIRST_LINE" == "$PACKAGE_FIRST_LINE" ]]
+
+          TEMPLATE=$(tail -n +2 LICENSE)
+          PACKAGE_LICENSE=$(tail -n +2 ${{ matrix.package.directory }}/LICENSE)
+          [[ "$TEMPLATE" == "$PACKAGE_LICENSE" ]]
+
+      - name: Package is in composer.json's replace
+        if: ${{ matrix.package.new && !matrix.package.component_bridge }}
+        run: cat composer.json | jq -e '.replace."${{ matrix.package.name }}"|test("self.version")'
