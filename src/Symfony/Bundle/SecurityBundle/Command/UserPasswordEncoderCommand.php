@@ -58,9 +58,9 @@ class UserPasswordEncoderCommand extends Command
             ->addOption('empty-salt', null, InputOption::VALUE_NONE, 'Do not generate a salt or let the encoder generate one.')
             ->setHelp(<<<EOF
 
-The <info>%command.name%</info> command encodes passwords according to your
+The <info>%command.name%</> command encodes passwords according to your
 security configuration. This command is mainly used to generate passwords for
-the <comment>in_memory</comment> user provider type and for changing passwords
+the <comment>in_memory</> user provider type and for changing passwords
 in the database while developing the application.
 
 Suppose that you have the following security configuration in your application:
@@ -71,27 +71,27 @@ security:
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
         App\Entity\User: auto
-</comment>
+</>
 
 If you execute the command non-interactively, the first available configured
-user class under the <comment>security.encoders</comment> key is used and a random salt is
+user class under the <comment>security.encoders</> key is used and a random salt is
 generated to encode the password:
 
-  <info>php %command.full_name% --no-interaction [password]</info>
+  <info>php %command.full_name% --no-interaction [password]</>
 
 Pass the full user class path as the second argument to encode passwords for
 your own entities:
 
-  <info>php %command.full_name% --no-interaction [password] 'App\Entity\User'</info>
+  <info>php %command.full_name% --no-interaction [password] 'App\Entity\User'</>
 
 Executing the command interactively allows you to generate a random salt for
 encoding the password:
 
-  <info>php %command.full_name% [password] 'App\Entity\User'</info>
+  <info>php %command.full_name% [password] 'App\Entity\User'</>
 
-In case your encoder doesn't require a salt, add the <comment>empty-salt</comment> option:
+In case your encoder doesn't require a salt, add the <comment>empty-salt</> option:
 
-  <info>php %command.full_name% --empty-salt [password] 'App\Entity\User'</info>
+  <info>php %command.full_name% --empty-salt [password] 'App\Entity\User'</>
 
 EOF
             )

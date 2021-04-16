@@ -39,13 +39,13 @@ class FailedMessagesShowCommand extends AbstractFailedMessagesCommand
             ])
             ->setDescription('Show one or more messages from the failure transport.')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> shows message that are pending in the failure transport.
+The <info>%command.name%</> shows message that are pending in the failure transport.
 
-    <info>php %command.full_name%</info>
+    <info>php %command.full_name%</>
 
 Or look at a specific message by its id:
 
-    <info>php %command.full_name% {id}</info>
+    <info>php %command.full_name% {id}</>
 EOF
             )
         ;
@@ -104,7 +104,7 @@ EOF
             $io->comment(sprintf('Showing first %d messages.', $max));
         }
 
-        $io->comment('Run <comment>messenger:failed:show {id} -vv</comment> to see message details.');
+        $io->comment('Run <comment>messenger:failed:show {id} -vv</> to see message details.');
     }
 
     private function showMessage(string $id, SymfonyStyle $io)
@@ -120,8 +120,8 @@ EOF
 
         $io->writeln([
             '',
-            sprintf(' Run <comment>messenger:failed:retry %s</comment> to retry this message.', $id),
-            sprintf(' Run <comment>messenger:failed:remove %s</comment> to delete it.', $id),
+            sprintf(' Run <comment>messenger:failed:retry %s</> to retry this message.', $id),
+            sprintf(' Run <comment>messenger:failed:remove %s</> to delete it.', $id),
         ]);
     }
 }

@@ -48,7 +48,7 @@ final class CachePoolDeleteCommand extends Command
             ])
             ->setDescription('Delete an item from a cache pool')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> deletes an item from a given cache pool.
+The <info>%command.name%</> deletes an item from a given cache pool.
 
     %command.full_name% <pool> <key>
 EOF

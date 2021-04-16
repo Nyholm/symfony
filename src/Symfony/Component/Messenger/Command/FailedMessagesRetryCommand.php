@@ -61,21 +61,21 @@ class FailedMessagesRetryCommand extends AbstractFailedMessagesCommand
             ])
             ->setDescription('Retry one or more messages from the failure transport.')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> retries message in the failure transport.
+The <info>%command.name%</> retries message in the failure transport.
 
-    <info>php %command.full_name%</info>
+    <info>php %command.full_name%</>
 
 The command will interactively ask if each message should be retried
 or discarded.
 
 Some transports support retrying a specific message id, which comes
-from the <info>messenger:failed:show</info> command.
+from the <info>messenger:failed:show</> command.
 
-    <info>php %command.full_name% {id}</info>
+    <info>php %command.full_name% {id}</>
 
 Or pass multiple ids at once to process multiple messages:
 
-<info>php %command.full_name% {id1} {id2} {id3}</info>
+<info>php %command.full_name% {id1} {id2} {id3}</>
 
 EOF
             )
@@ -98,7 +98,7 @@ EOF
         $receiver = $this->getReceiver();
         $this->printPendingMessagesMessage($receiver, $io);
 
-        $io->writeln(sprintf('To retry all the messages, run <comment>messenger:consume %s</comment>', $this->getReceiverName()));
+        $io->writeln(sprintf('To retry all the messages, run <comment>messenger:consume %s</>', $this->getReceiverName()));
 
         $shouldForce = $input->getOption('force');
         $ids = $input->getArgument('id');

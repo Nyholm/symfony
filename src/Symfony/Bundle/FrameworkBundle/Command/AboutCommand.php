@@ -39,12 +39,12 @@ class AboutCommand extends Command
         $this
             ->setDescription('Display information about the current project')
             ->setHelp(<<<'EOT'
-The <info>%command.name%</info> command displays information about the current Symfony project.
+The <info>%command.name%</> command displays information about the current Symfony project.
 
-The <info>PHP</info> section displays important configuration that could affect your application. The values might
+The <info>PHP</> section displays important configuration that could affect your application. The values might
 be different between web and CLI.
 
-The <info>Environment</info> section displays the current environment variables managed by Symfony Dotenv. It will not
+The <info>Environment</> section displays the current environment variables managed by Symfony Dotenv. It will not
 be shown if no variables were found. The values might be different between web and CLI.
 EOT
             )

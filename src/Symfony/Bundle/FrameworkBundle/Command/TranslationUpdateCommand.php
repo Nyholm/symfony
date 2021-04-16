@@ -87,7 +87,7 @@ class TranslationUpdateCommand extends Command
             ])
             ->setDescription('Update the translation file')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command extracts translation strings from templates
+The <info>%command.name%</> command extracts translation strings from templates
 of a given bundle or the default translations directory. It can display them or merge
 the new ones into the translation files.
 
@@ -96,18 +96,18 @@ message.
 
 Example running against a Bundle (AcmeBundle)
 
-  <info>php %command.full_name% --dump-messages en AcmeBundle</info>
-  <info>php %command.full_name% --force --prefix="new_" fr AcmeBundle</info>
+  <info>php %command.full_name% --dump-messages en AcmeBundle</>
+  <info>php %command.full_name% --force --prefix="new_" fr AcmeBundle</>
 
 Example running against default messages directory
 
-  <info>php %command.full_name% --dump-messages en</info>
-  <info>php %command.full_name% --force --prefix="new_" fr</info>
+  <info>php %command.full_name% --dump-messages en</>
+  <info>php %command.full_name% --force --prefix="new_" fr</>
 
 You can sort the output with the <comment>--sort</> flag:
 
-    <info>php %command.full_name% --dump-messages --sort=asc en AcmeBundle</info>
-    <info>php %command.full_name% --dump-messages --sort=desc fr</info>
+    <info>php %command.full_name% --dump-messages --sort=asc en AcmeBundle</>
+    <info>php %command.full_name% --dump-messages --sort=desc fr</>
 EOF
             )
         ;
@@ -215,7 +215,7 @@ EOF
         }
 
         $io->title('Translation Messages Extractor and Dumper');
-        $io->comment(sprintf('Generating "<info>%s</info>" translation files for "<info>%s</info>"', $input->getArgument('locale'), $currentName));
+        $io->comment(sprintf('Generating "<info>%s</>" translation files for "<info>%s</>"', $input->getArgument('locale'), $currentName));
 
         // load any messages from templates
         $extractedCatalogue = new MessageCatalogue($input->getArgument('locale'));
@@ -308,14 +308,14 @@ EOF
                     }
                 }
 
-                $io->section(sprintf('Messages extracted for domain "<info>%s</info>" (%d message%s)', $domain, $domainMessagesCount, $domainMessagesCount > 1 ? 's' : ''));
+                $io->section(sprintf('Messages extracted for domain "<info>%s</>" (%d message%s)', $domain, $domainMessagesCount, $domainMessagesCount > 1 ? 's' : ''));
                 $io->listing($list);
 
                 $extractedMessagesCount += $domainMessagesCount;
             }
 
             if ('xlf' === $input->getOption('output-format')) {
-                $io->comment(sprintf('Xliff output version is <info>%s</info>', $input->getOption('xliff-version')));
+                $io->comment(sprintf('Xliff output version is <info>%s</>', $input->getOption('xliff-version')));
             }
 
             $resultMessage = sprintf('%d message%s successfully extracted', $extractedMessagesCount, $extractedMessagesCount > 1 ? 's were' : ' was');

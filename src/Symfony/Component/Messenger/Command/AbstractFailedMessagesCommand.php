@@ -89,7 +89,7 @@ abstract class AbstractFailedMessagesCommand extends Command
         $redeliveryStamps = $envelope->all(RedeliveryStamp::class);
         $io->writeln(' Message history:');
         foreach ($redeliveryStamps as $redeliveryStamp) {
-            $io->writeln(sprintf('  * Message failed at <info>%s</info> and was redelivered', $redeliveryStamp->getRedeliveredAt()->format('Y-m-d H:i:s')));
+            $io->writeln(sprintf('  * Message failed at <info>%s</> and was redelivered', $redeliveryStamp->getRedeliveredAt()->format('Y-m-d H:i:s')));
         }
         $io->newLine();
 
@@ -100,7 +100,7 @@ abstract class AbstractFailedMessagesCommand extends Command
             $io->title('Exception:');
             $io->writeln(null === $flattenException ? '(no data)' : $flattenException->getTraceAsString());
         } else {
-            $io->writeln(' Re-run command with <info>-vv</info> to see more message & error details.');
+            $io->writeln(' Re-run command with <info>-vv</> to see more message & error details.');
         }
     }
 
@@ -108,9 +108,9 @@ abstract class AbstractFailedMessagesCommand extends Command
     {
         if ($receiver instanceof MessageCountAwareInterface) {
             if (1 === $receiver->getMessageCount()) {
-                $io->writeln('There is <comment>1</comment> message pending in the failure transport.');
+                $io->writeln('There is <comment>1</> message pending in the failure transport.');
             } else {
-                $io->writeln(sprintf('There are <comment>%d</comment> messages pending in the failure transport.', $receiver->getMessageCount()));
+                $io->writeln(sprintf('There are <comment>%d</> messages pending in the failure transport.', $receiver->getMessageCount()));
             }
         }
     }

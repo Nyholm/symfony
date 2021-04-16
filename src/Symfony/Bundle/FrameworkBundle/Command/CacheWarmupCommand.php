@@ -49,13 +49,13 @@ class CacheWarmupCommand extends Command
             ])
             ->setDescription('Warm up an empty cache')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command warms up the cache.
+The <info>%command.name%</> command warms up the cache.
 
 Before running this command, the cache must be empty.
 
 This command does not generate the classes cache (as when executing this
 command, too many classes that should be part of the cache are already loaded
-in memory). Use <comment>curl</comment> or any other similar tool to warm up
+in memory). Use <comment>curl</> or any other similar tool to warm up
 the classes cache if you want.
 
 EOF
@@ -71,7 +71,7 @@ EOF
         $io = new SymfonyStyle($input, $output);
 
         $kernel = $this->getApplication()->getKernel();
-        $io->comment(sprintf('Warming up the cache for the <info>%s</info> environment with debug <info>%s</info>', $kernel->getEnvironment(), var_export($kernel->isDebug(), true)));
+        $io->comment(sprintf('Warming up the cache for the <info>%s</> environment with debug <info>%s</>', $kernel->getEnvironment(), var_export($kernel->isDebug(), true)));
 
         if (!$input->getOption('no-optional-warmers')) {
             $this->cacheWarmer->enableOptionalWarmers();

@@ -52,14 +52,14 @@ class DebugAutowiringCommand extends ContainerDebugCommand
             ])
             ->setDescription('List classes/interfaces you can use for autowiring')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command displays the classes and interfaces that
+The <info>%command.name%</> command displays the classes and interfaces that
 you can use as type-hints for autowiring:
 
-  <info>php %command.full_name%</info>
+  <info>php %command.full_name%</>
 
 You can also pass a search term to filter the list:
 
-  <info>php %command.full_name% log</info>
+  <info>php %command.full_name% log</>
 
 EOF
             )
@@ -95,7 +95,7 @@ EOF
         $io->title('Autowirable Types');
         $io->text('The following classes & interfaces can be used as type-hints when autowiring:');
         if ($search) {
-            $io->text(sprintf('(only showing classes/interfaces matching <comment>%s</comment>)', $search));
+            $io->text(sprintf('(only showing classes/interfaces matching <comment>%s</>)', $search));
         }
         $hasAlias = [];
         $all = $input->getOption('all');

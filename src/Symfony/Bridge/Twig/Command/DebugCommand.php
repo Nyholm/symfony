@@ -76,22 +76,22 @@ class DebugCommand extends Command
             ])
             ->setDescription('Show a list of twig functions, filters, globals and tests')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command outputs a list of twig functions,
+The <info>%command.name%</> command outputs a list of twig functions,
 filters, globals and tests.
 
-  <info>php %command.full_name%</info>
+  <info>php %command.full_name%</>
 
 The command lists all functions, filters, etc.
 
-  <info>php %command.full_name% @Twig/Exception/error.html.twig</info>
+  <info>php %command.full_name% @Twig/Exception/error.html.twig</>
 
 The command lists all paths that match the given template name.
 
-  <info>php %command.full_name% --filter=date</info>
+  <info>php %command.full_name% --filter=date</>
 
 The command lists everything that contains the word date.
 
-  <info>php %command.full_name% --format=json</info>
+  <info>php %command.full_name% --format=json</>
 
 The command lists everything in a machine readable json format.
 EOF
@@ -376,7 +376,7 @@ EOF
                 return '(unknown?)';
             }
         } catch (\UnexpectedValueException $e) {
-            return sprintf(' <error>%s</error>', $decorated ? OutputFormatter::escape($e->getMessage()) : $e->getMessage());
+            return sprintf(' <error>%s</>', $decorated ? OutputFormatter::escape($e->getMessage()) : $e->getMessage());
         }
 
         if ('globals' === $type) {

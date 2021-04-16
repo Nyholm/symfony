@@ -59,9 +59,9 @@ class RouterDebugCommand extends Command
             ])
             ->setDescription('Display current routes for an application')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> displays the configured routes:
+The <info>%command.name%</> displays the configured routes:
 
-  <info>php %command.full_name%</info>
+  <info>php %command.full_name%</>
 
 EOF
             )

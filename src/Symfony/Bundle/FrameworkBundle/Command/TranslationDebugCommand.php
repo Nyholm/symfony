@@ -88,33 +88,33 @@ class TranslationDebugCommand extends Command
             ])
             ->setDescription('Display translation messages information')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command helps finding unused or missing translation
+The <info>%command.name%</> command helps finding unused or missing translation
 messages and comparing them with the fallback ones by inspecting the
 templates and translation files of a given bundle or the default translations directory.
 
 You can display information about bundle translations in a specific locale:
 
-  <info>php %command.full_name% en AcmeDemoBundle</info>
+  <info>php %command.full_name% en AcmeDemoBundle</>
 
 You can also specify a translation domain for the search:
 
-  <info>php %command.full_name% --domain=messages en AcmeDemoBundle</info>
+  <info>php %command.full_name% --domain=messages en AcmeDemoBundle</>
 
 You can only display missing messages:
 
-  <info>php %command.full_name% --only-missing en AcmeDemoBundle</info>
+  <info>php %command.full_name% --only-missing en AcmeDemoBundle</>
 
 You can only display unused messages:
 
-  <info>php %command.full_name% --only-unused en AcmeDemoBundle</info>
+  <info>php %command.full_name% --only-unused en AcmeDemoBundle</>
 
 You can display information about application translations in a specific locale:
 
-  <info>php %command.full_name% en</info>
+  <info>php %command.full_name% en</>
 
 You can display information about translations in all registered bundles in a specific locale:
 
-  <info>php %command.full_name% --all en</info>
+  <info>php %command.full_name% --all en</>
 
 EOF
             )
@@ -302,15 +302,15 @@ EOF
     private function formatState(int $state): string
     {
         if (self::MESSAGE_MISSING === $state) {
-            return '<error> missing </error>';
+            return '<error> missing </>';
         }
 
         if (self::MESSAGE_UNUSED === $state) {
-            return '<comment> unused </comment>';
+            return '<comment> unused </>';
         }
 
         if (self::MESSAGE_EQUALS_FALLBACK === $state) {
-            return '<info> fallback </info>';
+            return '<info> fallback </>';
         }
 
         return $state;

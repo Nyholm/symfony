@@ -46,23 +46,23 @@ class ConfigDumpReferenceCommand extends AbstractConfigCommand
             ])
             ->setDescription('Dump the default configuration for an extension')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command dumps the default configuration for an
+The <info>%command.name%</> command dumps the default configuration for an
 extension/bundle.
 
 Either the extension alias or bundle name can be used:
 
-  <info>php %command.full_name% framework</info>
-  <info>php %command.full_name% FrameworkBundle</info>
+  <info>php %command.full_name% framework</>
+  <info>php %command.full_name% FrameworkBundle</>
 
-With the <info>--format</info> option specifies the format of the configuration,
-this is either <comment>yaml</comment> or <comment>xml</comment>.
-When the option is not provided, <comment>yaml</comment> is used.
+With the <info>--format</> option specifies the format of the configuration,
+this is either <comment>yaml</> or <comment>xml</>.
+When the option is not provided, <comment>yaml</> is used.
 
-  <info>php %command.full_name% FrameworkBundle --format=xml</info>
+  <info>php %command.full_name% FrameworkBundle --format=xml</>
 
 For dumping a specific option, add its path as second argument (only available for the yaml format):
 
-  <info>php %command.full_name% framework profiler.matcher</info>
+  <info>php %command.full_name% framework profiler.matcher</>
 
 EOF
             )
@@ -82,8 +82,8 @@ EOF
         if (null === $name = $input->getArgument('name')) {
             $this->listBundles($errorIo);
             $errorIo->comment([
-                'Provide the name of a bundle as the first argument of this command to dump its default configuration. (e.g. <comment>config:dump-reference FrameworkBundle</comment>)',
-                'For dumping a specific option, add its path as the second argument of this command. (e.g. <comment>config:dump-reference FrameworkBundle profiler.matcher</comment> to dump the <comment>framework.profiler.matcher</comment> configuration)',
+                'Provide the name of a bundle as the first argument of this command to dump its default configuration. (e.g. <comment>config:dump-reference FrameworkBundle</>)',
+                'For dumping a specific option, add its path as the second argument of this command. (e.g. <comment>config:dump-reference FrameworkBundle profiler.matcher</> to dump the <comment>framework.profiler.matcher</> configuration)',
             ]);
 
             return 0;

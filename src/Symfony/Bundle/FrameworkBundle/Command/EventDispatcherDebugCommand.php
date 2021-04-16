@@ -52,13 +52,13 @@ class EventDispatcherDebugCommand extends Command
             ])
             ->setDescription('Display configured listeners for an application')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command displays all configured listeners:
+The <info>%command.name%</> command displays all configured listeners:
 
-  <info>php %command.full_name%</info>
+  <info>php %command.full_name%</>
 
 To get specific listeners for an event, specify its name:
 
-  <info>php %command.full_name% kernel.request</info>
+  <info>php %command.full_name% kernel.request</>
 EOF
             )
         ;

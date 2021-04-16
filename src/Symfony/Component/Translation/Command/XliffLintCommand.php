@@ -57,21 +57,21 @@ class XliffLintCommand extends Command
             ->addArgument('filename', InputArgument::IS_ARRAY, 'A file, a directory or "-" for reading from STDIN')
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format', 'txt')
             ->setHelp(<<<EOF
-The <info>%command.name%</info> command lints an XLIFF file and outputs to STDOUT
+The <info>%command.name%</> command lints an XLIFF file and outputs to STDOUT
 the first encountered syntax error.
 
 You can validates XLIFF contents passed from STDIN:
 
-  <info>cat filename | php %command.full_name% -</info>
+  <info>cat filename | php %command.full_name% -</>
 
 You can also validate the syntax of a file:
 
-  <info>php %command.full_name% filename</info>
+  <info>php %command.full_name% filename</>
 
 Or of a whole directory:
 
-  <info>php %command.full_name% dirname</info>
-  <info>php %command.full_name% dirname --format=json</info>
+  <info>php %command.full_name% dirname</>
+  <info>php %command.full_name% dirname --format=json</>
 
 EOF
             )
@@ -178,10 +178,10 @@ EOF
 
         foreach ($filesInfo as $info) {
             if ($info['valid'] && $this->displayCorrectFiles) {
-                $io->comment('<info>OK</info>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
+                $io->comment('<info>OK</>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
             } elseif (!$info['valid']) {
                 ++$erroredFiles;
-                $io->text('<error> ERROR </error>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
+                $io->text('<error> ERROR </>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
                 $io->listing(array_map(function ($error) {
                     // general document errors have a '-1' line number
                     return -1 === $error['line'] ? $error['message'] : sprintf('Line %d, Column %d: %s', $error['line'], $error['column'], $error['message']);

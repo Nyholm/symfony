@@ -35,21 +35,21 @@ class ListCommand extends Command
             ->setDefinition($this->createDefinition())
             ->setDescription('List commands')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command lists all commands:
+The <info>%command.name%</> command lists all commands:
 
-  <info>php %command.full_name%</info>
+  <info>php %command.full_name%</>
 
 You can also display the commands for a specific namespace:
 
-  <info>php %command.full_name% test</info>
+  <info>php %command.full_name% test</>
 
-You can also output the information in other formats by using the <comment>--format</comment> option:
+You can also output the information in other formats by using the <comment>--format</> option:
 
-  <info>php %command.full_name% --format=xml</info>
+  <info>php %command.full_name% --format=xml</>
 
 It's also possible to get raw list of commands (useful for embedding command runner):
 
-  <info>php %command.full_name% --raw</info>
+  <info>php %command.full_name% --raw</>
 EOF
             )
         ;

@@ -51,23 +51,23 @@ final class SecretsSetCommand extends Command
             ->addOption('local', 'l', InputOption::VALUE_NONE, 'Update the local vault.')
             ->addOption('random', 'r', InputOption::VALUE_OPTIONAL, 'Generate a random value.', false)
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command stores a secret in the vault.
+The <info>%command.name%</> command stores a secret in the vault.
 
-    <info>%command.full_name% <name></info>
+    <info>%command.full_name% <name></>
 
 To reference secrets in services.yaml or any other config
-files, use <info>"%env(<name>)%"</info>.
+files, use <info>"%env(<name>)%"</>.
 
 By default, the secret value should be entered interactively.
 Alternatively, provide a file where to read the secret from:
 
-    <info>php %command.full_name% <name> filename</info>
+    <info>php %command.full_name% <name> filename</>
 
 Use "-" as a file name to read from STDIN:
 
-    <info>cat filename | php %command.full_name% <name> -</info>
+    <info>cat filename | php %command.full_name% <name> -</>
 
-Use <info>--local</info> to override secrets for local needs.
+Use <info>--local</> to override secrets for local needs.
 EOF
             )
         ;
@@ -126,7 +126,7 @@ EOF
         if (0 < $random) {
             $errOutput->write(' // The generated random value is: <comment>');
             $output->write($value);
-            $errOutput->writeln('</comment>');
+            $errOutput->writeln('</>');
             $io->newLine();
         }
 

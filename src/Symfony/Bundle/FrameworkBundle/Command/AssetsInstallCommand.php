@@ -70,22 +70,22 @@ class AssetsInstallCommand extends Command
             ->addOption('no-cleanup', null, InputOption::VALUE_NONE, 'Do not remove the assets of the bundles that no longer exist')
             ->setDescription('Install bundle\'s web assets under a public directory')
             ->setHelp(<<<'EOT'
-The <info>%command.name%</info> command installs bundle assets into a given
-directory (e.g. the <comment>public</comment> directory).
+The <info>%command.name%</> command installs bundle assets into a given
+directory (e.g. the <comment>public</> directory).
 
-  <info>php %command.full_name% public</info>
+  <info>php %command.full_name% public</>
 
 A "bundles" directory will be created inside the target directory and the
 "Resources/public" directory of each bundle will be copied into it.
 
 To create a symlink to each bundle instead of copying its assets, use the
-<info>--symlink</info> option (will fall back to hard copies when symbolic links aren't possible:
+<info>--symlink</> option (will fall back to hard copies when symbolic links aren't possible:
 
-  <info>php %command.full_name% public --symlink</info>
+  <info>php %command.full_name% public --symlink</>
 
-To make symlink relative, add the <info>--relative</info> option:
+To make symlink relative, add the <info>--relative</> option:
 
-  <info>php %command.full_name% public --symlink --relative</info>
+  <info>php %command.full_name% public --symlink --relative</>
 
 EOT
             )
@@ -120,13 +120,13 @@ EOT
 
         if ($input->getOption('relative')) {
             $expectedMethod = self::METHOD_RELATIVE_SYMLINK;
-            $io->text('Trying to install assets as <info>relative symbolic links</info>.');
+            $io->text('Trying to install assets as <info>relative symbolic links</>.');
         } elseif ($input->getOption('symlink')) {
             $expectedMethod = self::METHOD_ABSOLUTE_SYMLINK;
-            $io->text('Trying to install assets as <info>absolute symbolic links</info>.');
+            $io->text('Trying to install assets as <info>absolute symbolic links</>.');
         } else {
             $expectedMethod = self::METHOD_COPY;
-            $io->text('Installing assets as <info>hard copies</info>.');
+            $io->text('Installing assets as <info>hard copies</>.');
         }
 
         $io->newLine();

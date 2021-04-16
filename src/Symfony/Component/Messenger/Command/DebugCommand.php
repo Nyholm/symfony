@@ -45,14 +45,14 @@ class DebugCommand extends Command
             ->addArgument('bus', InputArgument::OPTIONAL, sprintf('The bus id (one of "%s")', implode('", "', array_keys($this->mapping))))
             ->setDescription('List messages you can dispatch using the message buses')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command displays all messages that can be
+The <info>%command.name%</> command displays all messages that can be
 dispatched using the message buses:
 
-  <info>php %command.full_name%</info>
+  <info>php %command.full_name%</>
 
 Or for a specific bus only:
 
-  <info>php %command.full_name% command_bus</info>
+  <info>php %command.full_name% command_bus</>
 
 EOF
             )

@@ -53,21 +53,21 @@ class LintCommand extends Command
             ->addOption('show-deprecations', null, InputOption::VALUE_NONE, 'Show deprecations as errors')
             ->addArgument('filename', InputArgument::IS_ARRAY, 'A file, a directory or "-" for reading from STDIN')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command lints a template and outputs to STDOUT
+The <info>%command.name%</> command lints a template and outputs to STDOUT
 the first encountered syntax error.
 
 You can validate the syntax of contents passed from STDIN:
 
-  <info>cat filename | php %command.full_name% -</info>
+  <info>cat filename | php %command.full_name% -</>
 
 Or the syntax of a file:
 
-  <info>php %command.full_name% filename</info>
+  <info>php %command.full_name% filename</>
 
 Or of a whole directory:
 
-  <info>php %command.full_name% dirname</info>
-  <info>php %command.full_name% dirname --format=json</info>
+  <info>php %command.full_name% dirname</>
+  <info>php %command.full_name% dirname --format=json</>
 
 EOF
             )
@@ -191,7 +191,7 @@ EOF
 
         foreach ($filesInfo as $info) {
             if ($info['valid'] && $output->isVerbose()) {
-                $io->comment('<info>OK</info>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
+                $io->comment('<info>OK</>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
             } elseif (!$info['valid']) {
                 ++$errors;
                 $this->renderException($io, $info['template'], $info['exception'], $info['file']);
@@ -231,15 +231,15 @@ EOF
         $line = $exception->getTemplateLine();
 
         if ($file) {
-            $output->text(sprintf('<error> ERROR </error> in %s (line %s)', $file, $line));
+            $output->text(sprintf('<error> ERROR </> in %s (line %s)', $file, $line));
         } else {
-            $output->text(sprintf('<error> ERROR </error> (line %s)', $line));
+            $output->text(sprintf('<error> ERROR </> (line %s)', $line));
         }
 
         // If the line is not known (this might happen for deprecations if we fail at detecting the line for instance),
         // we render the message without context, to ensure the message is displayed.
         if ($line <= 0) {
-            $output->text(sprintf('<error> >> %s</error> ', $exception->getRawMessage()));
+            $output->text(sprintf('<error> >> %s</> ', $exception->getRawMessage()));
 
             return;
         }
@@ -247,12 +247,12 @@ EOF
         foreach ($this->getContext($template, $line) as $lineNumber => $code) {
             $output->text(sprintf(
                 '%s %-6s %s',
-                $lineNumber === $line ? '<error> >> </error>' : '    ',
+                $lineNumber === $line ? '<error> >> </>' : '    ',
                 $lineNumber,
                 $code
             ));
             if ($lineNumber === $line) {
-                $output->text(sprintf('<error> >> %s</error> ', $exception->getRawMessage()));
+                $output->text(sprintf('<error> >> %s</> ', $exception->getRawMessage()));
             }
         }
     }

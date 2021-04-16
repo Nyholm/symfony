@@ -46,7 +46,7 @@ final class CachePoolPruneCommand extends Command
         $this
             ->setDescription('Prune cache pools')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command deletes all expired items from all pruneable pools.
+The <info>%command.name%</> command deletes all expired items from all pruneable pools.
 
     %command.full_name%
 EOF
@@ -62,7 +62,7 @@ EOF
         $io = new SymfonyStyle($input, $output);
 
         foreach ($this->pools as $name => $pool) {
-            $io->comment(sprintf('Pruning cache pool: <info>%s</info>', $name));
+            $io->comment(sprintf('Pruning cache pool: <info>%s</>', $name));
             $pool->prune();
         }
 

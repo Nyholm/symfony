@@ -49,7 +49,7 @@ final class CachePoolClearCommand extends Command
             ])
             ->setDescription('Clear cache pools')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command clears the given cache pools or cache pool clearers.
+The <info>%command.name%</> command clears the given cache pools or cache pool clearers.
 
     %command.full_name% <cache pool or clearer 1> [...<cache pool or clearer N>]
 EOF
@@ -84,12 +84,12 @@ EOF
         }
 
         foreach ($clearers as $id => $clearer) {
-            $io->comment(sprintf('Calling cache clearer: <info>%s</info>', $id));
+            $io->comment(sprintf('Calling cache clearer: <info>%s</>', $id));
             $clearer->clear($kernel->getContainer()->getParameter('kernel.cache_dir'));
         }
 
         foreach ($pools as $id => $pool) {
-            $io->comment(sprintf('Clearing cache pool: <info>%s</info>', $id));
+            $io->comment(sprintf('Clearing cache pool: <info>%s</>', $id));
 
             if ($pool instanceof CacheItemPoolInterface) {
                 $pool->clear();

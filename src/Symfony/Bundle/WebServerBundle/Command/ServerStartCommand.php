@@ -60,26 +60,26 @@ class ServerStartCommand extends Command
             ])
             ->setDescription('Start a local web server in the background')
             ->setHelp(<<<'EOF'
-<info>%command.name%</info> runs a local web server: By default, the server
+<info>%command.name%</> runs a local web server: By default, the server
 listens on <comment>127.0.0.1</> address and the port number is automatically selected
 as the first free port starting from <comment>8000</>:
 
-  <info>php %command.full_name%</info>
+  <info>php %command.full_name%</>
 
 The server is run in the background and you can keep executing other commands.
 Execute <comment>server:stop</> to stop it.
 
 Change the default address and port by passing them as an argument:
 
-  <info>php %command.full_name% 127.0.0.1:8080</info>
+  <info>php %command.full_name% 127.0.0.1:8080</>
 
-Use the <info>--docroot</info> option to change the default docroot directory:
+Use the <info>--docroot</> option to change the default docroot directory:
 
-  <info>php %command.full_name% --docroot=htdocs/</info>
+  <info>php %command.full_name% --docroot=htdocs/</>
 
-Specify your own router script via the <info>--router</info> option:
+Specify your own router script via the <info>--router</> option:
 
-  <info>php %command.full_name% --router=app/config/router.php</info>
+  <info>php %command.full_name% --router=app/config/router.php</>
 
 See also: https://php.net/features.commandline.webserver
 EOF
@@ -102,7 +102,7 @@ EOF
                 'You can either install it or use the "server:run" command instead.',
             ]);
 
-            if ($io->confirm('Do you want to execute <info>server:run</info> immediately?', false)) {
+            if ($io->confirm('Do you want to execute <info>server:run</> immediately?', false)) {
                 return $this->getApplication()->find('server:run')->run($input, $output);
             }
 

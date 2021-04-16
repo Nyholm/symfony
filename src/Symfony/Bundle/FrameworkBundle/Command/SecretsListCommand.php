@@ -48,13 +48,13 @@ final class SecretsListCommand extends Command
             ->setDescription('List all secrets.')
             ->addOption('reveal', 'r', InputOption::VALUE_NONE, 'Display decrypted values alongside names')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command list all stored secrets.
+The <info>%command.name%</> command list all stored secrets.
 
-    <info>%command.full_name%</info>
+    <info>%command.full_name%</>
 
-When the option <info>--reveal</info> is provided, the decrypted secrets are also displayed.
+When the option <info>--reveal</> is provided, the decrypted secrets are also displayed.
 
-    <info>%command.full_name% --reveal</info>
+    <info>%command.full_name% --reveal</>
 EOF
             )
         ;
@@ -64,10 +64,10 @@ EOF
     {
         $io = new SymfonyStyle($input, $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output);
 
-        $io->comment('Use <info>"%env(<name>)%"</info> to reference a secret in a config file.');
+        $io->comment('Use <info>"%env(<name>)%"</> to reference a secret in a config file.');
 
         if (!$reveal = $input->getOption('reveal')) {
-            $io->comment(sprintf('To reveal the secrets run <info>php %s %s --reveal</info>', $_SERVER['PHP_SELF'], $this->getName()));
+            $io->comment(sprintf('To reveal the secrets run <info>php %s %s --reveal</>', $_SERVER['PHP_SELF'], $this->getName()));
         }
 
         $secrets = $this->vault->list($reveal);
@@ -101,7 +101,7 @@ EOF
         (new SymfonyStyle($input, $output))
             ->table(['Secret', 'Value'] + (null !== $localSecrets ? [2 => 'Local Value'] : []), $rows);
 
-        $io->comment("Local values override secret values.\nUse <info>secrets:set --local</info> to define them.");
+        $io->comment("Local values override secret values.\nUse <info>secrets:set --local</> to define them.");
 
         return 0;
     }

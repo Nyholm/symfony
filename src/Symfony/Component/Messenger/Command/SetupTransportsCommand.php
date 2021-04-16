@@ -43,13 +43,13 @@ class SetupTransportsCommand extends Command
             ->addArgument('transport', InputArgument::OPTIONAL, 'Name of the transport to setup', null)
             ->setDescription('Prepare the required infrastructure for the transport')
             ->setHelp(<<<EOF
-The <info>%command.name%</info> command setups the transports:
+The <info>%command.name%</> command setups the transports:
 
-    <info>php %command.full_name%</info>
+    <info>php %command.full_name%</>
 
 Or a specific transport only:
 
-    <info>php %command.full_name% <transport></info>
+    <info>php %command.full_name% <transport></>
 EOF
             )
         ;

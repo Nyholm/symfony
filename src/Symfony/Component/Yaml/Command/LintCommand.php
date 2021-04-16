@@ -58,21 +58,21 @@ class LintCommand extends Command
             ->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format', 'txt')
             ->addOption('parse-tags', null, InputOption::VALUE_NONE, 'Parse custom tags')
             ->setHelp(<<<EOF
-The <info>%command.name%</info> command lints a YAML file and outputs to STDOUT
+The <info>%command.name%</> command lints a YAML file and outputs to STDOUT
 the first encountered syntax error.
 
 You can validates YAML contents passed from STDIN:
 
-  <info>cat filename | php %command.full_name% -</info>
+  <info>cat filename | php %command.full_name% -</>
 
 You can also validate the syntax of a file:
 
-  <info>php %command.full_name% filename</info>
+  <info>php %command.full_name% filename</>
 
 Or of a whole directory:
 
-  <info>php %command.full_name% dirname</info>
-  <info>php %command.full_name% dirname --format=json</info>
+  <info>php %command.full_name% dirname</>
+  <info>php %command.full_name% dirname --format=json</>
 
 EOF
             )
@@ -157,11 +157,11 @@ EOF
 
         foreach ($filesInfo as $info) {
             if ($info['valid'] && $this->displayCorrectFiles) {
-                $io->comment('<info>OK</info>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
+                $io->comment('<info>OK</>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
             } elseif (!$info['valid']) {
                 ++$erroredFiles;
-                $io->text('<error> ERROR </error>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
-                $io->text(sprintf('<error> >> %s</error>', $info['message']));
+                $io->text('<error> ERROR </>'.($info['file'] ? sprintf(' in %s', $info['file']) : ''));
+                $io->text(sprintf('<error> >> %s</>', $info['message']));
 
                 if (false !== strpos($info['message'], 'PARSE_CUSTOM_TAGS')) {
                     $suggestTagOption = true;

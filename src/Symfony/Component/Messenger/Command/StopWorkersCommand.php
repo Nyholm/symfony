@@ -44,9 +44,9 @@ class StopWorkersCommand extends Command
             ->setDefinition([])
             ->setDescription('Stop workers after their current message')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command sends a signal to stop any <info>messenger:consume</info> processes that are running.
+The <info>%command.name%</> command sends a signal to stop any <info>messenger:consume</> processes that are running.
 
-    <info>php %command.full_name%</info>
+    <info>php %command.full_name%</>
 
 Each worker command will finish the message they are currently processing
 and then exit. Worker commands are *not* automatically restarted: that

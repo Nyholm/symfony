@@ -35,7 +35,7 @@ final class LintCommand extends BaseLintCommand
 
 Or all template files in a bundle:
 
-  <info>php %command.full_name% @AcmeDemoBundle</info>
+  <info>php %command.full_name% @AcmeDemoBundle</>
 
 EOF
             )

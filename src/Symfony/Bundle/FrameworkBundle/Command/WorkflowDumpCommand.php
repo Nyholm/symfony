@@ -45,11 +45,11 @@ class WorkflowDumpCommand extends Command
             ])
             ->setDescription('Dump a workflow')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command dumps the graphical representation of a
+The <info>%command.name%</> command dumps the graphical representation of a
 workflow in different formats
 
-<info>DOT</info>:  %command.full_name% <workflow name> | dot -Tpng > workflow.png
-<info>PUML</info>: %command.full_name% <workflow name> --dump-format=puml | java -jar plantuml.jar -p > workflow.png
+<info>DOT</>:  %command.full_name% <workflow name> | dot -Tpng > workflow.png
+<info>PUML</>: %command.full_name% <workflow name> --dump-format=puml | java -jar plantuml.jar -p > workflow.png
 
 EOF
             )

@@ -55,13 +55,13 @@ class RouterMatchCommand extends Command
             ])
             ->setDescription('Help debug routes by simulating a path info match')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> shows which routes match a given request and which don't and for what reason:
+The <info>%command.name%</> shows which routes match a given request and which don't and for what reason:
 
-  <info>php %command.full_name% /foo</info>
+  <info>php %command.full_name% /foo</>
 
 or
 
-  <info>php %command.full_name% /foo --method POST --scheme https --host symfony.com --verbose</info>
+  <info>php %command.full_name% /foo --method POST --scheme https --host symfony.com --verbose</>
 
 EOF
             )

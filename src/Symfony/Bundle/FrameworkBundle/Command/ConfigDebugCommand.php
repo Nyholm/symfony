@@ -43,17 +43,17 @@ class ConfigDebugCommand extends AbstractConfigCommand
             ])
             ->setDescription('Dump the current configuration for an extension')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command dumps the current configuration for an
+The <info>%command.name%</> command dumps the current configuration for an
 extension/bundle.
 
 Either the extension alias or bundle name can be used:
 
-  <info>php %command.full_name% framework</info>
-  <info>php %command.full_name% FrameworkBundle</info>
+  <info>php %command.full_name% framework</>
+  <info>php %command.full_name% FrameworkBundle</>
 
 For dumping a specific option, add its path as second argument:
 
-  <info>php %command.full_name% framework serializer.enabled</info>
+  <info>php %command.full_name% framework serializer.enabled</>
 
 EOF
             )
@@ -70,8 +70,8 @@ EOF
 
         if (null === $name = $input->getArgument('name')) {
             $this->listBundles($errorIo);
-            $errorIo->comment('Provide the name of a bundle as the first argument of this command to dump its configuration. (e.g. <comment>debug:config FrameworkBundle</comment>)');
-            $errorIo->comment('For dumping a specific option, add its path as the second argument of this command. (e.g. <comment>debug:config FrameworkBundle serializer</comment> to dump the <comment>framework.serializer</comment> configuration)');
+            $errorIo->comment('Provide the name of a bundle as the first argument of this command to dump its configuration. (e.g. <comment>debug:config FrameworkBundle</>)');
+            $errorIo->comment('For dumping a specific option, add its path as the second argument of this command. (e.g. <comment>debug:config FrameworkBundle serializer</> to dump the <comment>framework.serializer</> configuration)');
 
             return 0;
         }

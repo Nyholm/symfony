@@ -81,31 +81,31 @@ class ConsumeMessagesCommand extends Command
             ])
             ->setDescription('Consume messages')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command consumes messages and dispatches them to the message bus.
+The <info>%command.name%</> command consumes messages and dispatches them to the message bus.
 
-    <info>php %command.full_name% <receiver-name></info>
+    <info>php %command.full_name% <receiver-name></>
 
 To receive from multiple transports, pass each name:
 
-    <info>php %command.full_name% receiver1 receiver2</info>
+    <info>php %command.full_name% receiver1 receiver2</>
 
 Use the --limit option to limit the number of messages received:
 
-    <info>php %command.full_name% <receiver-name> --limit=10</info>
+    <info>php %command.full_name% <receiver-name> --limit=10</>
 
 Use the --memory-limit option to stop the worker if it exceeds a given memory usage limit. You can use shorthand byte values [K, M or G]:
 
-    <info>php %command.full_name% <receiver-name> --memory-limit=128M</info>
+    <info>php %command.full_name% <receiver-name> --memory-limit=128M</>
 
 Use the --time-limit option to stop the worker when the given time limit (in seconds) is reached:
 
-    <info>php %command.full_name% <receiver-name> --time-limit=3600</info>
+    <info>php %command.full_name% <receiver-name> --time-limit=3600</>
 
 Use the --bus option to specify the message bus to dispatch received messages
 to instead of trying to determine it automatically. This is required if the
 messages didn't originate from Messenger:
 
-    <info>php %command.full_name% <receiver-name> --bus=event_bus</info>
+    <info>php %command.full_name% <receiver-name> --bus=event_bus</>
 EOF
             )
         ;
@@ -123,7 +123,7 @@ EOF
 
             $io->writeln('Choose which receivers you want to consume messages from in order of priority.');
             if (\count($this->receiverNames) > 1) {
-                $io->writeln(sprintf('Hint: to consume from multiple, use a list of their names, e.g. <comment>%s</comment>', implode(', ', $this->receiverNames)));
+                $io->writeln(sprintf('Hint: to consume from multiple, use a list of their names, e.g. <comment>%s</>', implode(', ', $this->receiverNames)));
             }
 
             $question = new ChoiceQuestion('Select receivers to consume:', $this->receiverNames, 0);
@@ -145,7 +145,7 @@ EOF
         if (false !== strpos($input->getFirstArgument(), ':consume-')) {
             $message = 'The use of the "messenger:consume-messages" command is deprecated since version 4.3 and will be removed in 5.0. Use "messenger:consume" instead.';
             @trigger_error($message, \E_USER_DEPRECATED);
-            $output->writeln(sprintf('<comment>%s</comment>', $message));
+            $output->writeln(sprintf('<comment>%s</>', $message));
         }
 
         $receivers = [];

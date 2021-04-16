@@ -40,9 +40,9 @@ class FailedMessagesRemoveCommand extends AbstractFailedMessagesCommand
             ])
             ->setDescription('Remove a message from the failure transport.')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> removes a message that is pending in the failure transport.
+The <info>%command.name%</> removes a message that is pending in the failure transport.
 
-    <info>php %command.full_name% {id}</info>
+    <info>php %command.full_name% {id}</>
 
 The specific id can be found via the messenger:failed:show command.
 EOF

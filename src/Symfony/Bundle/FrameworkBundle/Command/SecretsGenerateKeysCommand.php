@@ -48,15 +48,15 @@ final class SecretsGenerateKeysCommand extends Command
             ->addOption('local', 'l', InputOption::VALUE_NONE, 'Update the local vault.')
             ->addOption('rotate', 'r', InputOption::VALUE_NONE, 'Re-encrypt existing secrets with the newly generated keys.')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command generates a new encryption key.
+The <info>%command.name%</> command generates a new encryption key.
 
-    <info>%command.full_name%</info>
+    <info>%command.full_name%</>
 
 If encryption keys already exist, the command must be called with
-the <info>--rotate</info> option in order to override those keys and re-encrypt
+the <info>--rotate</> option in order to override those keys and re-encrypt
 existing secrets.
 
-    <info>%command.full_name% --rotate</info>
+    <info>%command.full_name% --rotate</>
 EOF
             )
         ;

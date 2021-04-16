@@ -66,50 +66,50 @@ class ContainerDebugCommand extends Command
             ])
             ->setDescription('Display current services for an application')
             ->setHelp(<<<'EOF'
-The <info>%command.name%</info> command displays all configured <comment>public</comment> services:
+The <info>%command.name%</> command displays all configured <comment>public</> services:
 
-  <info>php %command.full_name%</info>
+  <info>php %command.full_name%</>
 
 To get specific information about a service, specify its name:
 
-  <info>php %command.full_name% validator</info>
+  <info>php %command.full_name% validator</>
 
-To get specific information about a service including all its arguments, use the <info>--show-arguments</info> flag:
+To get specific information about a service including all its arguments, use the <info>--show-arguments</> flag:
 
-  <info>php %command.full_name% validator --show-arguments</info>
+  <info>php %command.full_name% validator --show-arguments</>
 
-To see available types that can be used for autowiring, use the <info>--types</info> flag:
+To see available types that can be used for autowiring, use the <info>--types</> flag:
 
-  <info>php %command.full_name% --types</info>
+  <info>php %command.full_name% --types</>
 
-To see environment variables used by the container, use the <info>--env-vars</info> flag:
+To see environment variables used by the container, use the <info>--env-vars</> flag:
 
-  <info>php %command.full_name% --env-vars</info>
+  <info>php %command.full_name% --env-vars</>
 
-Display a specific environment variable by specifying its name with the <info>--env-var</info> option:
+Display a specific environment variable by specifying its name with the <info>--env-var</> option:
 
-  <info>php %command.full_name% --env-var=APP_ENV</info>
+  <info>php %command.full_name% --env-var=APP_ENV</>
 
-Use the --tags option to display tagged <comment>public</comment> services grouped by tag:
+Use the --tags option to display tagged <comment>public</> services grouped by tag:
 
-  <info>php %command.full_name% --tags</info>
+  <info>php %command.full_name% --tags</>
 
-Find all services with a specific tag by specifying the tag name with the <info>--tag</info> option:
+Find all services with a specific tag by specifying the tag name with the <info>--tag</> option:
 
-  <info>php %command.full_name% --tag=form.type</info>
+  <info>php %command.full_name% --tag=form.type</>
 
-Use the <info>--parameters</info> option to display all parameters:
+Use the <info>--parameters</> option to display all parameters:
 
-  <info>php %command.full_name% --parameters</info>
+  <info>php %command.full_name% --parameters</>
 
-Display a specific parameter by specifying its name with the <info>--parameter</info> option:
+Display a specific parameter by specifying its name with the <info>--parameter</> option:
 
-  <info>php %command.full_name% --parameter=kernel.debug</info>
+  <info>php %command.full_name% --parameter=kernel.debug</>
 
 By default, internal services are hidden. You can display them
-using the <info>--show-hidden</info> flag:
+using the <info>--show-hidden</> flag:
 
-  <info>php %command.full_name% --show-hidden</info>
+  <info>php %command.full_name% --show-hidden</>
 
 EOF
             )
@@ -182,11 +182,11 @@ EOF
 
         if (!$input->getArgument('name') && !$input->getOption('tag') && !$input->getOption('parameter') && !$input->getOption('env-vars') && !$input->getOption('env-var') && $input->isInteractive()) {
             if ($input->getOption('tags')) {
-                $errorIo->comment('To search for a specific tag, re-run this command with a search term. (e.g. <comment>debug:container --tag=form.type</comment>)');
+                $errorIo->comment('To search for a specific tag, re-run this command with a search term. (e.g. <comment>debug:container --tag=form.type</>)');
             } elseif ($input->getOption('parameters')) {
-                $errorIo->comment('To search for a specific parameter, re-run this command with a search term. (e.g. <comment>debug:container --parameter=kernel.debug</comment>)');
+                $errorIo->comment('To search for a specific parameter, re-run this command with a search term. (e.g. <comment>debug:container --parameter=kernel.debug</>)');
             } else {
-                $errorIo->comment('To search for a specific service, re-run this command with a search term. (e.g. <comment>debug:container log</comment>)');
+                $errorIo->comment('To search for a specific service, re-run this command with a search term. (e.g. <comment>debug:container log</>)');
             }
         }
 

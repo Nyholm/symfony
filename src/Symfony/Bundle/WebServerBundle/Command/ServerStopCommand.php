@@ -50,9 +50,9 @@ class ServerStopCommand extends Command
             ])
             ->setDescription('Stop the local web server that was started with the server:start command')
             ->setHelp(<<<'EOF'
-<info>%command.name%</info> stops the local web server:
+<info>%command.name%</> stops the local web server:
 
-  <info>php %command.full_name%</info>
+  <info>php %command.full_name%</>
 EOF
             )
         ;

@@ -53,15 +53,15 @@ class ServerStatusCommand extends Command
             ])
             ->setDescription('Output the status of the local web server')
             ->setHelp(<<<'EOF'
-<info>%command.name%</info> shows the details of the given local web
+<info>%command.name%</> shows the details of the given local web
 server, such as the address and port where it is listening to:
 
-  <info>php %command.full_name%</info>
+  <info>php %command.full_name%</>
 
 To get the information as a machine readable format, use the
 <comment>--filter</> option:
 
-<info>php %command.full_name% --filter=port</info>
+<info>php %command.full_name% --filter=port</>
 
 Supported values are <comment>port</>, <comment>host</>, and <comment>address</>.
 EOF
