@@ -170,6 +170,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\String\LazyString;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Translation\Bridge\Loco\Provider\LocoProviderFactory;
+use Symfony\Component\Translation\Bridge\Lokalise\Provider\LokaliseProviderFactory;
 use Symfony\Component\Translation\Command\XliffLintCommand as BaseXliffLintCommand;
 use Symfony\Component\Translation\PseudoLocalizationTranslator;
 use Symfony\Component\Translation\Translator;
@@ -1355,14 +1356,18 @@ class FrameworkExtension extends Extension
 
         $classToServices = [
             LocoProviderFactory::class => 'translation.provider_factory.loco',
+            LokaliseProviderFactory::class => 'translation.provider_factory.lokalise',
         ];
 
         $parentPackages = ['symfony/framework-bundle', 'symfony/translation', 'symfony/http-client'];
 
         foreach ($classToServices as $class => $service) {
-            $package = sprintf('symfony/%s-translation', substr($service, \strlen('translation.provider_factory.')));
+            switch ($package = substr($service, \strlen('translation.provider_factory.'))) {
+                case 'loco': $package = 'loco'; break;
+                case 'lokalise': $package = 'lokalise'; break;
+            }
 
-            if (!$container->hasDefinition('http_client') || !ContainerBuilder::willBeAvailable($package, $class, $parentPackages)) {
+            if (!$container->hasDefinition('http_client') || !ContainerBuilder::willBeAvailable(sprintf('symfony/%s-translation', $package), $class, $parentPackages)) {
                 $container->removeDefinition($service);
             }
         }
