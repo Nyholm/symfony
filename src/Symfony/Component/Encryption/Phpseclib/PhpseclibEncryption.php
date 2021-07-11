@@ -29,14 +29,14 @@ use Symfony\Component\Encryption\KeyInterface;
  *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  *
- * @experimental in 5.3
+ * @experimental in 6.0
  */
 class PhpseclibEncryption implements EncryptionInterface
 {
     public function __construct()
     {
         if (!class_exists(RSA::class)) {
-            throw new \LogicException('You cannot use "Symfony\Component\Security\Core\Encryption\PhpseclibEncryption" as the "phpseclib/phpseclib:2.x" package is not installed. Try running "composer require phpseclib/phpseclib:^2".');
+            throw new \LogicException(sprintf('You cannot use "%s" as the "phpseclib/phpseclib" package is not installed. Try running "composer require phpseclib/phpseclib".', __CLASS__));
         }
     }
 

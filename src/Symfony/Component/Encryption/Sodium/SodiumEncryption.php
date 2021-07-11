@@ -26,7 +26,7 @@ use Symfony\Component\Encryption\KeyInterface;
  *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  *
- * @experimental in 5.3
+ * @experimental in 6.0
  */
 final class SodiumEncryption implements EncryptionInterface
 {

@@ -18,7 +18,7 @@ use Symfony\Component\Encryption\Exception\InvalidKeyException;
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  *
- * @experimental in 5.3
+ * @experimental in 6.0
  */
 interface EncryptionInterface
 {
@@ -39,8 +39,8 @@ interface EncryptionInterface
      *
      * Symmetric encryption uses the same key to encrypt and decrypt a message.
      * The key should be kept safe and should not be exposed to the public. Symmetric
-     * encryption should be used when you are not sending the encrypted message to
-     * anyone else.
+     * encryption should be used when you are sending the encrypted message to
+     * yourself.
      *
      * Example: You store a value on disk or in a cookie and don't want anyone else
      * to read it.
@@ -127,8 +127,7 @@ interface EncryptionInterface
      *     // Alice sends $ciphertext to Bob
      *
      *     // Bob:
-     *     $keypairForReceiving = $bobKey->createKeypair($alicePublicOnly)
-     *     $message = $encryption->decrypt($ciphertext, $keypairForReceiving);
+     *     $message = $encryption->decrypt($ciphertext, $bobKey, $alicePublicOnly);
      * </code>
      *
      * @param string       $message      Plain text version of the message
@@ -145,9 +144,9 @@ interface EncryptionInterface
     /**
      * Gets a plain text version of the encrypted message.
      *
-     * @param string       $message         Encrypted version of the message
-     * @param KeyInterface $key             Key of the recipient, it should contain a private key
-     * @param KeyInterface $senderPublicKey A public key to the sender to verify the signature
+     * @param string            $message         Encrypted version of the message
+     * @param KeyInterface      $key             Key of the recipient, it should contain a private key
+     * @param KeyInterface|null $senderPublicKey A public key to the sender to verify the signature
      *
      * @throws DecryptionException
      * @throws InvalidKeyException

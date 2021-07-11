@@ -1983,7 +1983,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('encryption')
-                    ->info('encryption configuration')
+                    ->info('Encryption configuration')
                     ->{$enableIfStandalone('symfony/encryption', EncryptionInterface::class)}()
                 ->end()
             ->end()

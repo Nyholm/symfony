@@ -99,6 +99,7 @@ class Ciphertext
         $model = new self();
         $model->algorithm = $headers['alg'];
         unset($headers['alg']);
+        $model->version = $headers['ver'];
         unset($headers['ver']);
         $model->headers = $headers;
         $model->nonce = $nonce;
@@ -117,10 +118,10 @@ class Ciphertext
 
     public function getString(): string
     {
-        $headers = json_encode(array_merge($this->headers, [
-            'alg' => $this->algorithm,
-            'ver' => '1',
-        ]));
+        $headers = $this->headers;
+        $headers['alg'] = $this->algorithm;
+        $headers['ver'] = (isset($headers['ver']) && $headers['ver'] !== '') ? $headers['ver'] : '1';
+        $headers = json_encode($headers);
 
         return sprintf('%s.%s.%s.%s',
             self::base64UrlEncode($headers),

@@ -16,7 +16,7 @@ namespace Symfony\Component\Encryption\Exception;
  *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  *
- * @experimental in 5.3
+ * @experimental in 6.0
  */
 interface ExceptionInterface extends \Throwable
 {
