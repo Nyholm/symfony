@@ -120,7 +120,7 @@ class Ciphertext
     {
         $headers = $this->headers;
         $headers['alg'] = $this->algorithm;
-        $headers['ver'] = (isset($headers['ver']) && $headers['ver'] !== '') ? $headers['ver'] : '1';
+        $headers['ver'] = (isset($headers['ver']) && '' !== $headers['ver']) ? $headers['ver'] : '1';
         $headers = json_encode($headers);
 
         return sprintf('%s.%s.%s.%s',
