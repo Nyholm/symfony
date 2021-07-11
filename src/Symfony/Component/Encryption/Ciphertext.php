@@ -85,7 +85,7 @@ class Ciphertext
         $nonce = self::base64UrlDecode($nonce);
         $hashSignature = self::base64UrlDecode($hashSignature);
 
-        // Check if Authentication Tag is valid
+        // Check if integrity hash is valid
         $hash = hash('sha256', $headersString.$payload.$nonce);
         if (!hash_equals($hash, $hashSignature)) {
             throw new MalformedCipherException();
