@@ -18,9 +18,6 @@
     "require": {
         "php": ">=8.0.2"
     },
-    "require-dev": {
-        "phpseclib/phpseclib": "^3.0.7"
-    },
     "autoload": {
         "psr-4": { "Symfony\\Component\\Encryption\\": "" },
         "exclude-from-classmap": [

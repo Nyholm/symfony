@@ -12,13 +12,11 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Symfony\Component\Encryption\EncryptionInterface;
-use Symfony\Component\Encryption\Phpseclib\PhpseclibEncryption;
 use Symfony\Component\Encryption\Sodium\SodiumEncryption;
 
 return static function (ContainerConfigurator $container) {
     $container->services()
         ->set('security.encryption.sodium', SodiumEncryption::class)
-        ->set('security.encryption.phpseclib', PhpseclibEncryption::class)
         ->alias(EncryptionInterface::class, 'security.encryption.sodium')
         ;
 };
