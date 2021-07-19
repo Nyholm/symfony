@@ -431,7 +431,7 @@ class Request
      * to keep BC with an existing system. It should not be used for any
      * other purpose.
      *
-     * @param callable():SessionInterface|null $callable A PHP callable
+     * @param callable():SessionInterface|null $callable
      */
     public static function setFactory(?callable $callable)
     {
