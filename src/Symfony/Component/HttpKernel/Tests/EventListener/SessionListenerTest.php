@@ -47,6 +47,7 @@ class SessionListenerTest extends TestCase
     public function testSessionIsSet()
     {
         $session = $this->createMock(Session::class);
+        $session->expects($this->exactly(1))->method('getName')->willReturn('PHPSESSID');
 
         $requestStack = $this->createMock(RequestStack::class);
         $requestStack->expects($this->once())->method('getMainRequest')->willReturn(null);
@@ -73,6 +74,7 @@ class SessionListenerTest extends TestCase
     public function testSessionUsesFactory()
     {
         $session = $this->createMock(Session::class);
+        $session->expects($this->exactly(1))->method('getName')->willReturn('PHPSESSID');
         $sessionFactory = $this->createMock(SessionFactory::class);
         $sessionFactory->expects($this->once())->method('createSession')->willReturn($session);
 
@@ -192,6 +194,7 @@ class SessionListenerTest extends TestCase
     public function testSurrogateMainRequestIsPublic()
     {
         $session = $this->createMock(Session::class);
+        $session->expects($this->exactly(2))->method('getName')->willReturn('PHPSESSID');
         $session->expects($this->exactly(4))->method('getUsageIndex')->will($this->onConsecutiveCalls(0, 1, 1, 1));
 
         $container = new Container();
@@ -231,6 +234,7 @@ class SessionListenerTest extends TestCase
     public function testGetSessionIsCalledOnce()
     {
         $session = $this->createMock(Session::class);
+        $session->expects($this->exactly(2))->method('getName')->willReturn('PHPSESSID');
         $sessionStorage = $this->createMock(NativeSessionStorage::class);
         $kernel = $this->createMock(KernelInterface::class);
 
@@ -308,6 +312,7 @@ class SessionListenerTest extends TestCase
     public function testSessionIsSavedWhenUnexpectedSessionExceptionThrown()
     {
         $session = $this->createMock(Session::class);
+        $session->expects($this->exactly(1))->method('getName')->willReturn('PHPSESSID');
         $session->method('isStarted')->willReturn(true);
         $session->expects($this->exactly(2))->method('getUsageIndex')->will($this->onConsecutiveCalls(0, 1));
         $session->expects($this->exactly(1))->method('save');
@@ -393,5 +398,47 @@ class SessionListenerTest extends TestCase
         $container->set('request_stack', $requestStack);
 
         (new SessionListener($container, true))->onSessionUsage();
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testReset()
+    {
+        session_start();
+        $_SESSION['test'] = ['test'];
+        session_write_close();
+
+        $this->assertNotEmpty($_SESSION);
+        $this->assertNotEmpty(session_id());
+
+        $container = new Container();
+
+        (new SessionListener($container, true))->reset();
+
+        $this->assertEmpty($_SESSION);
+        $this->assertEmpty(session_id());
+        $this->assertSame(\PHP_SESSION_NONE, session_status());
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testResetUnclosedSession()
+    {
+        session_start();
+        $_SESSION['test'] = ['test'];
+
+        $this->assertNotEmpty($_SESSION);
+        $this->assertNotEmpty(session_id());
+        $this->assertSame(\PHP_SESSION_ACTIVE, session_status());
+
+        $container = new Container();
+
+        (new SessionListener($container, true))->reset();
+
+        $this->assertEmpty($_SESSION);
+        $this->assertEmpty(session_id());
+        $this->assertSame(\PHP_SESSION_NONE, session_status());
     }
 }

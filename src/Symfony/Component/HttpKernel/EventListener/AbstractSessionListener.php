@@ -264,11 +264,14 @@ abstract class AbstractSessionListener implements EventSubscriberInterface, Rese
     {
         if (\PHP_SESSION_ACTIVE === session_status()) {
             session_abort();
-            session_unset();
         }
 
+        session_unset();
         $_SESSION = [];
-        session_id('');
+
+        if (!headers_sent()) { // session id can only be reset when no headers were so we check for headers_sent first
+            session_id('');
+        }
     }
 
     /**
