@@ -156,6 +156,7 @@ return static function (ContainerConfigurator $container) {
                 param('session.storage.options'),
             ])
             ->tag('kernel.event_subscriber')
+            ->tag('kernel.reset', ['method' => 'reset'])
 
         // for BC
         ->alias('session.storage.filesystem', 'session.storage.mock_file')

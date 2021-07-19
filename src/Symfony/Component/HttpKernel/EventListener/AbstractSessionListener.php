@@ -22,6 +22,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Exception\UnexpectedSessionUsageException;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * Sets the session onto the request on the "kernel.request" event and saves
@@ -38,7 +39,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  *
  * @internal
  */
-abstract class AbstractSessionListener implements EventSubscriberInterface
+abstract class AbstractSessionListener implements EventSubscriberInterface, ResetInterface
 {
     public const NO_AUTO_CACHE_CONTROL_HEADER = 'Symfony-Session-NoAutoCacheControl';
 
@@ -257,6 +258,17 @@ abstract class AbstractSessionListener implements EventSubscriberInterface
             KernelEvents::RESPONSE => ['onKernelResponse', -1000],
             KernelEvents::FINISH_REQUEST => ['onFinishRequest'],
         ];
+    }
+
+    public function reset(): void
+    {
+        if (PHP_SESSION_ACTIVE === session_status()) {
+            session_abort();
+            session_unset();
+        }
+
+        $_SESSION = [];
+        session_id('');
     }
 
     /**
