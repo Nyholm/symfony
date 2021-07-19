@@ -262,7 +262,7 @@ abstract class AbstractSessionListener implements EventSubscriberInterface, Rese
 
     public function reset(): void
     {
-        if (PHP_SESSION_ACTIVE === session_status()) {
+        if (\PHP_SESSION_ACTIVE === session_status()) {
             session_abort();
             session_unset();
         }
