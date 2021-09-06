@@ -142,7 +142,7 @@ abstract class AbstractSessionListener implements EventSubscriberInterface, Rese
             $sessionId = $session->getId();
             $sessionCookiePath = $this->sessionOptions['cookie_path'] ?? '/';
             $sessionCookieDomain = $this->sessionOptions['cookie_domain'] ?? null;
-            $sessionCookieSecure = $this->sessionOptions['cookie_secure'] ?? null;
+            $sessionCookieSecure = $this->sessionOptions['cookie_secure'] ?? false;
             $sessionCookieHttpOnly = $this->sessionOptions['cookie_httponly'] ?? true;
             $sessionCookieSameSite = $this->sessionOptions['cookie_samesite'] ?? Cookie::SAMESITE_LAX;
 
