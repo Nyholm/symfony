@@ -4,6 +4,7 @@ CHANGELOG
 7.0
 ---
 
+ * Add support for the experimental revamped version of the Serializer component
  * Remove command `translation:update`, use `translation:extract` instead
  * Make the `http_method_override` config option default to `false`
  * Remove `AbstractController::renderForm()`, use `render()` instead

@@ -4,6 +4,7 @@ CHANGELOG
 7.0
 ---
 
+ * Add an experimental revamped version of the component
  * Add method `getSupportedTypes()` to `DenormalizerInterface` and `NormalizerInterface`
  * Remove denormalization support for `AbstractUid` in `UidNormalizer`, use one of `AbstractUid` child class instead
  * Denormalizing to an abstract class in `UidNormalizer` now throws an `\Error`

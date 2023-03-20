@@ -18,6 +18,9 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Serializer\Debug\TraceableEncoder;
 use Symfony\Component\Serializer\Debug\TraceableNormalizer;
 use Symfony\Component\Serializer\DependencyInjection\SerializerPass;
+use Symfony\Component\Serializer\Tests\Fixtures\Dto\ClassicDummy;
+use Symfony\Component\Serializer\Tests\Fixtures\Dto\DummyWithAttributesUsingServices;
+use Symfony\Component\Serializer\Tests\Fixtures\Dto\DummyWithFormatterAttributes;
 
 /**
  * Tests for the SerializerPass class.
@@ -58,7 +61,13 @@ class SerializerPassTest extends TestCase
         $container = new ContainerBuilder();
         $container->setParameter('kernel.debug', false);
 
+        $container->register('serializer.serialize.template')->setArguments([null, null, null]);
+        $container->register('serializer.deserialize.template')->setArguments([null, null, null]);
+        $container->register('serializer.cache_warmer.template')->setArguments([null]);
+        $container->register('serializer.cache_warmer.lazy_ghost')->setArguments([null]);
+
         $definition = $container->register('serializer')->setArguments([null, null]);
+
         $container->register('n2')->addTag('serializer.normalizer', ['priority' => 100])->addTag('serializer.encoder', ['priority' => 100]);
         $container->register('n1')->addTag('serializer.normalizer', ['priority' => 200])->addTag('serializer.encoder', ['priority' => 200]);
         $container->register('n3')->addTag('serializer.normalizer')->addTag('serializer.encoder');
@@ -78,6 +87,12 @@ class SerializerPassTest extends TestCase
     public function testBindSerializerDefaultContext()
     {
         $container = new ContainerBuilder();
+
+        $container->register('serializer.serialize.template')->setArguments([null, null, null]);
+        $container->register('serializer.deserialize.template')->setArguments([null, null, null]);
+        $container->register('serializer.cache_warmer.template')->setArguments([null]);
+        $container->register('serializer.cache_warmer.lazy_ghost')->setArguments([null]);
+
         $container->setParameter('kernel.debug', false);
         $container->register('serializer')->setArguments([null, null]);
         $container->setParameter('serializer.default_context', ['enable_max_depth' => true]);
@@ -97,7 +112,13 @@ class SerializerPassTest extends TestCase
         $container->setParameter('kernel.debug', true);
         $container->register('serializer.data_collector');
 
+        $container->register('serializer.serialize.template')->setArguments([null, null, null]);
+        $container->register('serializer.deserialize.template')->setArguments([null, null, null]);
+        $container->register('serializer.cache_warmer.template')->setArguments([null]);
+        $container->register('serializer.cache_warmer.lazy_ghost')->setArguments([null]);
+
         $container->register('serializer')->setArguments([null, null]);
+
         $container->register('n')->addTag('serializer.normalizer');
         $container->register('e')->addTag('serializer.encoder');
 
@@ -114,5 +135,73 @@ class SerializerPassTest extends TestCase
         $this->assertEquals(TraceableEncoder::class, $traceableEncoderDefinition->getClass());
         $this->assertEquals(new Reference('e'), $traceableEncoderDefinition->getArgument(0));
         $this->assertEquals(new Reference('serializer.data_collector'), $traceableEncoderDefinition->getArgument(1));
+    }
+
+    public function testRetrieveTemplateGenerators()
+    {
+        $container = new ContainerBuilder();
+
+        $container->register('serializer.serialize.template')->setArguments([null, null, null]);
+        $container->register('serializer.deserialize.template')->setArguments([null, null, null]);
+        $container->register('serializer.cache_warmer.template')->setArguments([null]);
+        $container->register('serializer.cache_warmer.lazy_ghost')->setArguments([null]);
+
+        $container->register('serializer')->setArguments([null, null]);
+
+        $container->setParameter('kernel.debug', true);
+        $container->register('foo')->addTag('serializer.normalizer')->addTag('serializer.encoder');
+
+        $container->register('serialize.json')->addTag('serializer.serialize.template_generator', ['format' => 'json']);
+        $container->register('serialize.csv')->addTag('serializer.serialize.template_generator', ['format' => 'csv']);
+
+        $container->register('deserialize.json.eager')->addTag('serializer.deserialize.template_generator.eager', ['format' => 'json']);
+        $container->register('deserialize.csv.eager')->addTag('serializer.deserialize.template_generator.eager', ['format' => 'csv']);
+
+        $container->register('deserialize.json.lazy')->addTag('serializer.deserialize.template_generator.lazy', ['format' => 'json']);
+
+        (new SerializerPass())->process($container);
+
+        $this->assertEquals([
+            'json' => new Reference('serialize.json'),
+            'csv' => new Reference('serialize.csv'),
+        ], $container->getDefinition('serializer.serialize.template')->getArgument(2));
+
+        $this->assertEquals([
+            'json' => ['eager' => new Reference('deserialize.json.eager'), 'lazy' => new Reference('deserialize.json.lazy')],
+            'csv' => ['eager' => new Reference('deserialize.csv.eager')],
+        ], $container->getDefinition('serializer.deserialize.template')->getArgument(2));
+    }
+
+    public function testInjectSerializable()
+    {
+        $container = new ContainerBuilder();
+
+        $container->register('serializer.serialize.template')->setArguments([null, null, null]);
+        $container->register('serializer.deserialize.template')->setArguments([null, null, null]);
+        $container->register('serializer.cache_warmer.template')->setArguments([null]);
+        $container->register('serializer.cache_warmer.lazy_ghost')->setArguments([null]);
+
+        $container->register('serializer')->setArguments([null, null]);
+
+        $container->setParameter('kernel.debug', true);
+        $container->register('foo')->addTag('serializer.normalizer')->addTag('serializer.encoder');
+
+        $container->register(ClassicDummy::class, ClassicDummy::class)->addTag('serializer.serializable');
+        $container->register(DummyWithFormatterAttributes::class, DummyWithFormatterAttributes::class)->addTag('serializer.serializable');
+        $container->register(DummyWithAttributesUsingServices::class, DummyWithAttributesUsingServices::class)->addTag('serializer.serializable');
+
+        (new SerializerPass())->process($container);
+
+        $this->assertSame([
+            ClassicDummy::class,
+            DummyWithFormatterAttributes::class,
+            DummyWithAttributesUsingServices::class,
+        ], $container->getDefinition('serializer.cache_warmer.template')->getArgument(0));
+
+        $this->assertSame([
+            ClassicDummy::class,
+            DummyWithFormatterAttributes::class,
+            DummyWithAttributesUsingServices::class,
+        ], $container->getDefinition('serializer.cache_warmer.lazy_ghost')->getArgument(0));
     }
 }

@@ -19,6 +19,7 @@ use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Serializer\Debug\TraceableEncoder;
 use Symfony\Component\Serializer\Debug\TraceableNormalizer;
+use Symfony\Component\Serializer\Serialize\SerializerInterface as ExperimentalSerializerInterface;
 
 /**
  * Adds all services with the tags "serializer.encoder" and "serializer.normalizer" as
@@ -26,6 +27,7 @@ use Symfony\Component\Serializer\Debug\TraceableNormalizer;
  *
  * @author Javier Lopez <f12loalf@gmail.com>
  * @author Robin Chalas <robin.chalas@gmail.com>
+ * @author Mathias Arlaud<mathias.arlaud@gmail.com>
  */
 class SerializerPass implements CompilerPassInterface
 {
@@ -70,5 +72,51 @@ class SerializerPass implements CompilerPassInterface
         $serializerDefinition = $container->getDefinition('serializer');
         $serializerDefinition->replaceArgument(0, $normalizers);
         $serializerDefinition->replaceArgument(1, $encoders);
+
+        if (!interface_exists(ExperimentalSerializerInterface::class)) {
+            return;
+        }
+
+        //
+        // Experimental serializer
+        //
+
+        $serializeTemplateGenerators = [];
+        foreach ($container->findTaggedServiceIds('serializer.serialize.template_generator') as $id => $tags) {
+            $tag = reset($tags);
+            $serializeTemplateGenerators[$tag['format']] = new Reference($id);
+        }
+
+        $container->getDefinition('serializer.serialize.template')
+            ->replaceArgument(2, $serializeTemplateGenerators);
+
+        $deserializeTemplateGenerators = [];
+        foreach ($container->findTaggedServiceIds('serializer.deserialize.template_generator.eager') as $id => $tags) {
+            $tag = reset($tags);
+            $deserializeTemplateGenerators[$tag['format']]['eager'] = new Reference($id);
+        }
+
+        foreach ($container->findTaggedServiceIds('serializer.deserialize.template_generator.lazy') as $id => $tags) {
+            $tag = reset($tags);
+            $deserializeTemplateGenerators[$tag['format']]['lazy'] = new Reference($id);
+        }
+
+        $container->getDefinition('serializer.deserialize.template')
+            ->replaceArgument(2, $deserializeTemplateGenerators);
+
+        $serializable = [];
+        foreach ($container->getDefinitions() as $definition) {
+            if (!$definition->hasTag('serializer.serializable')) {
+                continue;
+            }
+
+            $serializable[] = $definition->getClass();
+        }
+
+        $container->getDefinition('serializer.cache_warmer.template')
+            ->replaceArgument(0, $serializable);
+
+        $container->getDefinition('serializer.cache_warmer.lazy_ghost')
+            ->replaceArgument(0, $serializable);
     }
 }

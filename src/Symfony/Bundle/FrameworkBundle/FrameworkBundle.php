@@ -60,6 +60,8 @@ use Symfony\Component\Mime\DependencyInjection\AddMimeTypeGuesserPass;
 use Symfony\Component\PropertyInfo\DependencyInjection\PropertyInfoPass;
 use Symfony\Component\Routing\DependencyInjection\RoutingResolverPass;
 use Symfony\Component\Scheduler\DependencyInjection\AddScheduleMessengerPass;
+use Symfony\Component\Serializer\DependencyInjection\RuntimeSerializerServicesPass;
+use Symfony\Component\Serializer\DependencyInjection\SerializablePass;
 use Symfony\Component\Serializer\DependencyInjection\SerializerPass;
 use Symfony\Component\Translation\DependencyInjection\TranslationDumperPass;
 use Symfony\Component\Translation\DependencyInjection\TranslationExtractorPass;
@@ -154,6 +156,9 @@ class FrameworkBundle extends Bundle
         $this->addCompilerPassIfExists($container, TranslationExtractorPass::class);
         $this->addCompilerPassIfExists($container, TranslationDumperPass::class);
         $container->addCompilerPass(new FragmentRendererPass());
+        // must be registered before the SerializerPass and RuntimeSerializerServicesPass
+        $this->addCompilerPassIfExists($container, SerializablePass::class, priority: 16);
+        $this->addCompilerPassIfExists($container, RuntimeSerializerServicesPass::class);
         $this->addCompilerPassIfExists($container, SerializerPass::class);
         $this->addCompilerPassIfExists($container, PropertyInfoPass::class);
         $container->addCompilerPass(new ControllerArgumentValueResolverPass());
