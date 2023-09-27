@@ -42,11 +42,11 @@ class TypeGenericsHelperTest extends TestCase
     public static function classGenericTypesDataProvider(): iterable
     {
         yield [[], ClassicDummy::class, Type::class(ClassicDummy::class)];
-        yield [[], ClassicDummy::class, Type::class(DummyWithGenerics::class, genericParameterTypes: [Type::int()])];
-        yield [['T' => Type::int()], DummyWithGenerics::class, Type::class(DummyWithGenerics::class, genericParameterTypes: [Type::int()])];
-        yield [['T' => Type::int()], DummyWithGenerics::class, Type::list(Type::class(DummyWithGenerics::class, genericParameterTypes: [Type::int()]))];
-        yield [['T' => Type::int()], DummyWithGenerics::class, Type::union(Type::int(), Type::class(DummyWithGenerics::class, genericParameterTypes: [Type::int()]))];
-        yield [['T' => Type::int()], DummyWithGenerics::class, Type::intersection(Type::int(), Type::class(DummyWithGenerics::class, genericParameterTypes: [Type::int()]))];
+        yield [[], ClassicDummy::class, Type::generic(Type::class(DummyWithGenerics::class), Type::int())];
+        yield [['T' => Type::int()], DummyWithGenerics::class, Type::generic(Type::class(DummyWithGenerics::class), Type::int())];
+        yield [['T' => Type::int()], DummyWithGenerics::class, Type::list(Type::generic(Type::class(DummyWithGenerics::class), Type::int()))];
+        yield [['T' => Type::int()], DummyWithGenerics::class, Type::union(Type::int(), Type::generic(Type::class(DummyWithGenerics::class), Type::int()))];
+        yield [['T' => Type::int()], DummyWithGenerics::class, Type::intersection(Type::int(), Type::generic(Type::class(DummyWithGenerics::class), Type::int()))];
     }
 
     /**

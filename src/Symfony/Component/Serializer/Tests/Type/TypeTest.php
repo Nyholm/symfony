@@ -45,13 +45,10 @@ class TypeTest extends TestCase
         yield [ClassicDummy::class, Type::class(ClassicDummy::class)];
         yield ['?'.ClassicDummy::class, Type::class(ClassicDummy::class, nullable: true)];
 
-        yield [ClassicDummy::class.'<int>', Type::class(ClassicDummy::class, genericParameterTypes: [Type::int()])];
+        yield [ClassicDummy::class.'<int>', Type::generic(Type::class(ClassicDummy::class), Type::int())];
         yield [
             ClassicDummy::class.'<'.ClassicDummy::class.'<?bool>>',
-            Type::class(
-                ClassicDummy::class,
-                genericParameterTypes: [Type::class(ClassicDummy::class, genericParameterTypes: [Type::bool(nullable: true)])],
-            ),
+            Type::generic(Type::class(ClassicDummy::class), Type::generic(Type::class(ClassicDummy::class), Type::bool(nullable: true))),
         ];
 
         yield ['array<int|string, mixed>', Type::array()];
@@ -250,7 +247,7 @@ class TypeTest extends TestCase
             'intersection' => false,
         ];
         yield [
-            'type' => Type::class(ClassicDummy::class, genericParameterTypes: [Type::int()]),
+            'type' => Type::generic(Type::class(ClassicDummy::class), Type::int()),
             'scalar' => false,
             'null' => false,
             'nullable' => false,
@@ -415,7 +412,7 @@ class TypeTest extends TestCase
 
         yield [Type::list(Type::dict(Type::bool(nullable: true))), 'list<array<string, ?bool>>'];
         yield [Type::list(Type::dict(Type::bool(nullable: true))), 'array<int, array<string, ?bool>>'];
-        yield [Type::class(DummyWithGenerics::class, genericParameterTypes: [Type::int()]), DummyWithGenerics::class.'<int>'];
+        yield [Type::generic(Type::class(DummyWithGenerics::class), Type::int()), DummyWithGenerics::class.'<int>'];
 
         yield [Type::union(Type::int(), Type::string()), 'int|string'];
         yield [Type::union(Type::int(), Type::string(), Type::null()), 'int|?string'];

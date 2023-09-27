@@ -153,13 +153,14 @@ class TemplateTest extends TestCase
     public function testThrowOnUnsupportedFormat()
     {
         $this->expectException(UnsupportedFormatException::class);
+        $this->expectExceptionMessage('"format" format is not supported lazily. Expected one of "foo", "bar"');
 
         $template = new Template(
             $this->createStub(TemplateVariationExtractorInterface::class),
             $this->createStub(DataModelBuilderInterface::class),
-            [],
+            ['foo' => ['lazy' => null, 'eager' => null], 'bar' => ['lazy' => null]],
             $this->cacheDir,
-            false,
+            true,
         );
         $template->content(Type::int(), 'format', new DeserializeConfig());
     }

@@ -59,7 +59,7 @@ class TypePropertyMetadataLoaderTest extends TestCase
         $metadata = $loader->load(
             DummyWithGenerics::class,
             new DeserializeConfig(),
-            ['original_type' => Type::class(DummyWithGenerics::class, genericParameterTypes: [Type::int()])],
+            ['original_type' => Type::generic(Type::class(DummyWithGenerics::class), Type::int())],
         );
 
         $this->assertEquals([
@@ -76,7 +76,7 @@ class TypePropertyMetadataLoaderTest extends TestCase
         $metadata = $loader->load(
             DummyWithGenerics::class,
             new DeserializeConfig(),
-            ['original_type' => Type::class(DummyWithGenerics::class, genericParameterTypes: [Type::class(\DateTimeImmutable::class)])],
+            ['original_type' => Type::generic(Type::class(DummyWithGenerics::class), Type::class(\DateTimeImmutable::class))],
         );
 
         $this->assertEquals([

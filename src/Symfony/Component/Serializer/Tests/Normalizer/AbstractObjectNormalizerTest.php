@@ -32,9 +32,11 @@ use Symfony\Component\Serializer\Mapping\ClassMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -137,6 +139,29 @@ class AbstractObjectNormalizerTest extends TestCase
         $this->assertSame('notfoo', $test->foo);
         $this->assertSame('baz', $test->baz);
         $this->assertNull($test->notfoo);
+    }
+
+    public function testDenormalizeWithSnakeCaseNestedAttributes()
+    {
+        $factory = new ClassMetadataFactory(new AnnotationLoader());
+        $normalizer = new ObjectNormalizer($factory, new CamelCaseToSnakeCaseNameConverter());
+        $data = [
+            'one' => [
+                'two_three' => 'fooBar',
+            ],
+        ];
+        $test = $normalizer->denormalize($data, SnakeCaseNestedDummy::class, 'any');
+        $this->assertSame('fooBar', $test->fooBar);
+    }
+
+    public function testNormalizeWithSnakeCaseNestedAttributes()
+    {
+        $factory = new ClassMetadataFactory(new AnnotationLoader());
+        $normalizer = new ObjectNormalizer($factory, new CamelCaseToSnakeCaseNameConverter());
+        $dummy = new SnakeCaseNestedDummy();
+        $dummy->fooBar = 'fooBar';
+        $test = $normalizer->normalize($dummy, 'any');
+        $this->assertSame(['one' => ['two_three' => 'fooBar']], $test);
     }
 
     public function testDenormalizeWithNestedAttributes()
@@ -744,6 +769,23 @@ class AbstractObjectNormalizerTest extends TestCase
 
         $this->assertSame('called', $object->bar);
     }
+
+    public function testDenormalizeUnionOfEnums()
+    {
+        $serializer = new Serializer([
+            new BackedEnumNormalizer(),
+            new ObjectNormalizer(
+                classMetadataFactory: new ClassMetadataFactory(new AnnotationLoader()),
+                propertyTypeExtractor: new PropertyInfoExtractor([], [new ReflectionExtractor()]),
+            ),
+        ]);
+
+        $normalized = $serializer->normalize(new DummyWithEnumUnion(EnumA::A));
+        $this->assertEquals(new DummyWithEnumUnion(EnumA::A), $serializer->denormalize($normalized, DummyWithEnumUnion::class));
+
+        $normalized = $serializer->normalize(new DummyWithEnumUnion(EnumB::B));
+        $this->assertEquals(new DummyWithEnumUnion(EnumB::B), $serializer->denormalize($normalized, DummyWithEnumUnion::class));
+    }
 }
 
 class AbstractObjectNormalizerDummy extends AbstractObjectNormalizer
@@ -838,6 +880,12 @@ class NestedDummyWithConstructor
         public $baz,
     ) {
     }
+}
+
+class SnakeCaseNestedDummy
+{
+    #[SerializedPath('[one][two_three]')]
+    public $fooBar;
 }
 
 #[DiscriminatorMap(typeProperty: 'type', mapping: [
@@ -1117,5 +1165,23 @@ class NotSerializable
     public function __sleep(): array
     {
         throw new \Error('not serializable');
+    }
+}
+
+enum EnumA: string
+{
+    case A = 'a';
+}
+
+enum EnumB: string
+{
+    case B = 'b';
+}
+
+class DummyWithEnumUnion
+{
+    public function __construct(
+        public readonly EnumA|EnumB $enum,
+    ) {
     }
 }

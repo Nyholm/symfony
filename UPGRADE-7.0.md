@@ -202,6 +202,16 @@ FrameworkBundle
  * Remove the integration of Doctrine annotations, use native attributes instead
  * Remove `EnableLoggerDebugModePass`, use argument `$debug` of HttpKernel's `Logger` instead
  * Remove `AddDebugLogProcessorPass::configureLogger()`, use HttpKernel's `DebugLoggerConfigurator` instead
+ * Make the `framework.handle_all_throwables` config option default to `true`
+ * Make the `framework.php_errors.log` config option default to `true`
+ * Make the `framework.session.cookie_secure` config option default to `auto`
+ * Make the `framework.session.cookie_samesite` config option default to `lax`
+ * Make the `framework.session.handler_id` default to null if `save_path` is not set and to `session.handler.native_file` otherwise
+ * Make the `framework.uid.default_uuid_version` config option default to `7`
+ * Make the `framework.uid.time_based_uuid_version` config option default to `7`
+ * Make the `framework.validation.email_validation_mode` config option default to `html5`
+ * Remove the `framework.validation.enable_annotations` config option, use `framework.validation.enable_attributes` instead
+ * Remove the `framework.serializer.enable_annotations` config option, use `framework.serializer.enable_attributes` instead
 
 HttpFoundation
 --------------
@@ -452,6 +462,7 @@ TwigBundle
  * Remove option `twig.autoescape`; create a class that implements your escaping strategy
    (check `FileExtensionEscapingStrategy::guess()` for inspiration) and reference it using
    the `twig.autoescape_service` option instead
+ * Drop support for Twig 2
 
 Validator
 ---------
@@ -464,9 +475,11 @@ Validator
  * Remove `VALIDATION_MODE_LOOSE` from `Email` constraint, use `VALIDATION_MODE_HTML5` instead
  * Remove constraint `ExpressionLanguageSyntax`, use `ExpressionSyntax` instead
  * Remove Doctrine annotations support in favor of native attributes
- * Remove the annotation reader parameter from the constructor signature of `AnnotationLoader`
  * Remove `ValidatorBuilder::setDoctrineAnnotationReader()`
  * Remove `ValidatorBuilder::addDefaultDoctrineAnnotationReader()`
+ * Remove `ValidatorBuilder::enableAnnotationMapping()`, use `ValidatorBuilder::enableAttributeMapping()` instead
+ * Remove `ValidatorBuilder::disableAnnotationMapping()`, use `ValidatorBuilder::disableAttributeMapping()` instead
+ * Remove `AnnotationLoader`, use `AttributeLoader` instead
 
 VarDumper
 ---------
@@ -478,6 +491,7 @@ Workflow
 --------
 
  * Require explicit argument when calling `Definition::setInitialPlaces()`
+ * `GuardEvent::getContext()` method has been removed. Method was not supposed to be called within guard event listeners as it always returned an empty array anyway.
 
 Yaml
 ----

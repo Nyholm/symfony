@@ -15,6 +15,16 @@ CHANGELOG
  * Remove the integration of Doctrine annotations, use native attributes instead
  * Remove `EnableLoggerDebugModePass`, use argument `$debug` of HttpKernel's `Logger` instead
  * Remove `AddDebugLogProcessorPass::configureLogger()`, use HttpKernel's `DebugLoggerConfigurator` instead
+ * Make the `framework.handle_all_throwables` config option default to `true`
+ * Make the `framework.php_errors.log` config option default to `true`
+ * Make the `framework.session.cookie_secure` config option default to `auto`
+ * Make the `framework.session.cookie_samesite` config option default to `lax`
+ * Make the `framework.session.handler_id` default to null if `save_path` is not set and to `session.handler.native_file` otherwise
+ * Make the `framework.uid.default_uuid_version` config option default to `7`
+ * Make the `framework.uid.time_based_uuid_version` config option default to `7`
+ * Make the `framework.validation.email_validation_mode` config option default to `html5`
+ * Remove the `framework.validation.enable_annotations` config option, use `framework.validation.enable_attributes` instead
+ * Remove the `framework.serializer.enable_annotations` config option, use `framework.serializer.enable_attributes` instead
 
 6.4
 ---
@@ -32,11 +42,14 @@ CHANGELOG
  * Deprecate not setting the `framework.php_errors.log` config option; it will default to `true` in 7.0
  * Deprecate not setting the `framework.session.cookie_secure` config option; it will default to `auto` in 7.0
  * Deprecate not setting the `framework.session.cookie_samesite` config option; it will default to `lax` in 7.0
- * Deprecate not setting the `framework.session.handler_id` config option; it will default to `session.handler.native_file` when `framework.session.save_path` is set or `null` otherwise in 7.0
- * Deprecate not setting the `framework.session.save_path` config option when `framework.session.handler_id` is not set; it will default to `null` in 7.0
+ * Deprecate not setting either `framework.session.handler_id` or `save_path` config options; `handler_id` will
+   default to null in 7.0 if `save_path` is not set and to `session.handler.native_file` otherwise
  * Deprecate not setting the `framework.uid.default_uuid_version` config option; it will default to `7` in 7.0
  * Deprecate not setting the `framework.uid.time_based_uuid_version` config option; it will default to `7` in 7.0
  * Deprecate not setting the `framework.validation.email_validation_mode` config option; it will default to `html5` in 7.0
+ * Deprecate `framework.validation.enable_annotations`, use `framework.validation.enable_attributes` instead
+ * Deprecate `framework.serializer.enable_annotations`, use `framework.serializer.enable_attributes` instead
+ * Add `array $tokenAttributes = []` optional parameter to `KernelBrowser::loginUser()`
 
 6.3
 ---

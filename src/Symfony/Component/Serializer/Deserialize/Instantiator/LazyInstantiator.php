@@ -58,10 +58,10 @@ final class LazyInstantiator implements InstantiatorInterface
 
             $lazyClassName = sprintf('%sGhost', preg_replace('/\\\\/', '', $className));
 
-            file_put_contents($path, sprintf('class %s%s', $lazyClassName, ProxyHelper::generateLazyGhost($reflection)));
+            file_put_contents($path, sprintf('<?php class %s%s', $lazyClassName, ProxyHelper::generateLazyGhost($reflection)));
         }
 
-        eval(file_get_contents(sprintf('%s%s%s.php', $this->cacheDir, \DIRECTORY_SEPARATOR, hash('xxh128', $className))));
+        require_once sprintf('%s%s%s.php', $this->cacheDir, \DIRECTORY_SEPARATOR, hash('xxh128', $className));
 
         self::$lazyClassesLoaded[$className] = true;
 

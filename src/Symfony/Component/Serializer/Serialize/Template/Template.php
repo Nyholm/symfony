@@ -62,7 +62,7 @@ final class Template
     {
         $generator = $this->generators[$format] ?? null;
         if (null === $generator) {
-            throw new UnsupportedFormatException(sprintf('"%s" format is not supported.', $format));
+            throw new UnsupportedFormatException(sprintf('"%s" format is not supported. Expected one of "%s"', $format, implode('", "', array_keys($this->generators))));
         }
 
         $compiler = new Compiler();

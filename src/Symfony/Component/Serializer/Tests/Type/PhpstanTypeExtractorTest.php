@@ -148,7 +148,7 @@ class PhpstanTypeExtractorTest extends TestCase
         yield [Type::list(Type::string()), 'squareBracketList'];
         yield [Type::dict(Type::union(Type::int(), Type::string())), 'bracketList'];
         yield [Type::dict(), 'emptyBracketList'];
-        yield [Type::class(\ArrayIterator::class, genericParameterTypes: [Type::fromString('Tk'), Type::fromString('Tv')]), 'generic'];
+        yield [Type::generic(Type::class(\ArrayIterator::class), Type::fromString('Tk'), Type::fromString('Tv')), 'generic'];
         yield [Type::fromString('Tv'), 'genericParameter'];
         yield [Type::fromString('FALLBACK'), 'undefined'];
     }

@@ -15,18 +15,24 @@ CHANGELOG
  * Remove the annotation reader parameter from the constructor signature of `AnnotationLoader`
  * Remove `ValidatorBuilder::setDoctrineAnnotationReader()`
  * Remove `ValidatorBuilder::addDefaultDoctrineAnnotationReader()`
+ * Remove `ValidatorBuilder::enableAnnotationMapping()`, use `ValidatorBuilder::enableAttributeMapping()` instead
+ * Remove `ValidatorBuilder::disableAnnotationMapping()`, use `ValidatorBuilder::disableAttributeMapping()` instead
+ * Remove `AnnotationLoader`, use `AttributeLoader` instead
 
 6.4
 ---
 
+ * Add `is_valid` function to the `Expression` constraint, its behavior is the same as `ValidatorInterface::validate`
  * Allow single integer for the `versions` option of the `Uuid` constraint
  * Allow single constraint to be passed to the `constraints` option of the `When` constraint
  * Deprecate Doctrine annotations support in favor of native attributes
- * Deprecate passing an annotation reader to the constructor signature of `AnnotationLoader`
  * Deprecate `ValidatorBuilder::setDoctrineAnnotationReader()`
  * Deprecate `ValidatorBuilder::addDefaultDoctrineAnnotationReader()`
  * Add `number`, `finite-number` and `finite-float` types to `Type` constraint
  * Add the `withSeconds` option to the `Time` constraint that allows to pass time without seconds
+ * Deprecate `ValidatorBuilder::enableAnnotationMapping()`, use `ValidatorBuilder::enableAttributeMapping()` instead
+ * Deprecate `ValidatorBuilder::disableAnnotationMapping()`, use `ValidatorBuilder::disableAttributeMapping()` instead
+ * Deprecate `AnnotationLoader`, use `AttributeLoader` instead
 
 6.3
 ---

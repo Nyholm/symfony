@@ -488,10 +488,11 @@ final class Type implements \Stringable
 
     public static function array(self $value = null, self $key = null, bool $nullable = false): self
     {
-        return new self('array', isNullable: $nullable, genericParameterTypes: [
+        return self::generic(
+            new self('array', isNullable: $nullable),
             $key ?? self::union(self::int(), self::string()),
             $value ?? self::mixed(),
-        ]);
+        );
     }
 
     public static function list(self $value = null, bool $nullable = false): self
@@ -506,10 +507,11 @@ final class Type implements \Stringable
 
     public static function iterable(self $value = null, self $key = null, bool $nullable = false): self
     {
-        return new self('iterable', isNullable: $nullable, genericParameterTypes: [
+        return self::generic(
+            new self('iterable', isNullable: $nullable),
             $key ?? self::union(self::int(), self::string()),
             $value ?? self::mixed(),
-        ]);
+        );
     }
 
     public static function iterableList(self $value = null, bool $nullable = false): self
@@ -529,11 +531,10 @@ final class Type implements \Stringable
 
     /**
      * @param class-string $className
-     * @param list<self>   $genericParameterTypes
      */
-    public static function class(string $className, bool $nullable = false, array $genericParameterTypes = []): self
+    public static function class(string $className, bool $nullable = false): self
     {
-        return new self('object', isNullable: $nullable, className: $className, genericParameterTypes: $genericParameterTypes);
+        return new self('object', isNullable: $nullable, className: $className);
     }
 
     public static function enum(string $enumClassName, bool $nullable = false): self
@@ -545,6 +546,16 @@ final class Type implements \Stringable
         }
 
         return new self('enum', isNullable: $nullable, className: $enumClassName);
+    }
+
+    public static function generic(self $main, self ...$parameters): self
+    {
+        return new self(
+            name: $main->name(),
+            isNullable: $main->isNullable(),
+            className: $main->hasClass() ? $main->className() : null,
+            genericParameterTypes: $parameters,
+        );
     }
 
     public static function union(self ...$types): self

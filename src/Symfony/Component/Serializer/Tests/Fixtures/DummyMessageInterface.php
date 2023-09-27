@@ -19,6 +19,7 @@ use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 #[DiscriminatorMap(typeProperty: 'type', mapping: [
     'one' => DummyMessageNumberOne::class,
     'two' => DummyMessageNumberTwo::class,
+    'three' => DummyMessageNumberThree::class,
 ])]
 interface DummyMessageInterface
 {

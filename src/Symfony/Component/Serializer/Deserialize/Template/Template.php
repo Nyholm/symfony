@@ -72,7 +72,9 @@ final class Template
 
         $generator = $this->generators[$format][$lazy ? 'lazy' : 'eager'] ?? null;
         if (null === $generator) {
-            throw new UnsupportedFormatException(sprintf('"%s" format is not supported %s.', $format, $lazy ? 'lazily' : 'eagerly'));
+            $supportedFormats = array_keys(array_filter($this->generators, fn (array $format): bool => \array_key_exists($lazy ? 'lazy' : 'eager', $format)));
+
+            throw new UnsupportedFormatException(sprintf('"%s" format is not supported %s. Expected one of "%s"', $format, $lazy ? 'lazily' : 'eagerly', implode('", "', $supportedFormats)));
         }
 
         $compiler = new Compiler();

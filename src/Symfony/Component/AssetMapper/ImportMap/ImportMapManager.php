@@ -15,7 +15,9 @@ use Symfony\Component\AssetMapper\AssetDependency;
 use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Symfony\Component\AssetMapper\ImportMap\Resolver\PackageResolverInterface;
 use Symfony\Component\AssetMapper\Path\PublicAssetsPathResolverInterface;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\VarExporter\VarExporter;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * @author Kévin Dunglas <kevin@dunglas.dev>
@@ -54,6 +56,7 @@ class ImportMapManager
     private array $importMapEntries;
     private array $modulesToPreload;
     private string $json;
+    private readonly HttpClientInterface $httpClient;
 
     public function __construct(
         private readonly AssetMapperInterface $assetMapper,
@@ -61,7 +64,9 @@ class ImportMapManager
         private readonly string $importMapConfigPath,
         private readonly string $vendorDir,
         private readonly PackageResolverInterface $resolver,
+        HttpClientInterface $httpClient = null,
     ) {
+        $this->httpClient = $httpClient ?? HttpClient::create();
     }
 
     public function getModulesToPreload(): array
@@ -87,7 +92,7 @@ class ImportMapManager
      */
     public function require(array $packages): array
     {
-        return $this->updateImportMapConfig(false, $packages, []);
+        return $this->updateImportMapConfig(false, $packages, [], []);
     }
 
     /**
@@ -97,15 +102,43 @@ class ImportMapManager
      */
     public function remove(array $packages): void
     {
-        $this->updateImportMapConfig(false, [], $packages);
+        $this->updateImportMapConfig(false, [], $packages, []);
     }
 
     /**
-     * Updates all existing packages to the latest version.
+     * Updates either all existing packages or the specified ones to the latest version.
+     *
+     * @return ImportMapEntry[]
      */
-    public function update(): array
+    public function update(array $packages = []): array
     {
-        return $this->updateImportMapConfig(true, [], []);
+        return $this->updateImportMapConfig(true, [], [], $packages);
+    }
+
+    /**
+     * Downloads all missing downloaded packages.
+     *
+     * @return string[] The downloaded packages
+     */
+    public function downloadMissingPackages(): array
+    {
+        $entries = $this->loadImportMapEntries();
+        $downloadedPackages = [];
+
+        foreach ($entries as $entry) {
+            if (!$entry->isDownloaded || $this->assetMapper->getAsset($entry->path)) {
+                continue;
+            }
+
+            $this->downloadPackage(
+                $entry->importName,
+                $this->httpClient->request('GET', $entry->url)->getContent(),
+            );
+
+            $downloadedPackages[] = $entry->importName;
+        }
+
+        return $downloadedPackages;
     }
 
     /**
@@ -159,7 +192,7 @@ class ImportMapManager
      *
      * @return ImportMapEntry[]
      */
-    private function updateImportMapConfig(bool $update, array $packagesToRequire, array $packagesToRemove): array
+    private function updateImportMapConfig(bool $update, array $packagesToRequire, array $packagesToRemove, array $packagesToUpdate): array
     {
         $currentEntries = $this->loadImportMapEntries();
 
@@ -174,7 +207,7 @@ class ImportMapManager
 
         if ($update) {
             foreach ($currentEntries as $importName => $entry) {
-                if (null === $entry->url) {
+                if (null === $entry->url || (0 !== \count($packagesToUpdate) && !\in_array($importName, $packagesToUpdate, true))) {
                     continue;
                 }
 
@@ -380,6 +413,10 @@ class ImportMapManager
 
             if (null !== $entryOptions->path) {
                 if (!$asset = $this->assetMapper->getAsset($entryOptions->path)) {
+                    if ($entryOptions->isDownloaded) {
+                        throw new \InvalidArgumentException(sprintf('The "%s" downloaded asset is missing. Run "php bin/console importmap:install".', $entryOptions->path));
+                    }
+
                     throw new \InvalidArgumentException(sprintf('The asset "%s" mentioned in "%s" cannot be found in any asset map paths.', $entryOptions->path, basename($this->importMapConfigPath)));
                 }
                 $path = $asset->publicPath;

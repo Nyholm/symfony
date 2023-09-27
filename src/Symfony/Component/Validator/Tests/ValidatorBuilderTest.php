@@ -70,9 +70,9 @@ class ValidatorBuilderTest extends TestCase
         $this->assertSame($this->builder, $this->builder->addMethodMappings([]));
     }
 
-    public function testDisableAnnotationMapping()
+    public function testDisableAttributeMapping()
     {
-        $this->assertSame($this->builder, $this->builder->disableAnnotationMapping());
+        $this->assertSame($this->builder, $this->builder->disableAttributeMapping());
     }
 
     public function testSetMappingCache()

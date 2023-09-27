@@ -148,11 +148,12 @@ class TemplateTest extends TestCase
     public function testThrowOnUnsupportedFormat()
     {
         $this->expectException(UnsupportedFormatException::class);
+        $this->expectExceptionMessage('"format" format is not supported. Expected one of "foo", "bar"');
 
         $template = new Template(
             $this->createStub(TemplateVariationExtractorInterface::class),
             $this->createStub(DataModelBuilderInterface::class),
-            [],
+            ['foo' => null, 'bar' => null],
             $this->cacheDir,
             false,
         );
