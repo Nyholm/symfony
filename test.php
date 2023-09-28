@@ -20,8 +20,6 @@ require_once __DIR__.'/Test/Resources/Cat.php';
 require_once __DIR__.'/Test/Resources/Person.php';
 require_once __DIR__.'/Test/Resources/DummyDenormalizer.php';
 
-$outputDir = __DIR__.'/_output';
-
 $person = new \Test\Resources\Person('John', 47);
 $cat = new \Test\Resources\Cat('Jane', 11);
 $person->setCat($cat);
